@@ -3,7 +3,9 @@
 class Particle
 {
 public:
-	Particle();
+	Particle(float mass,float radius);
 	~Particle();
 private:
+	float mass;
+	float radius;
 };
