@@ -7,20 +7,25 @@ Space::Space(std::pair<float, float> scr_size, unsigned int size)
 	scr_size(scr_size),
 	cube_scale(0.7)
 {
-	for (int i = 0; i < 24;i++)
+	for (int i = 0; i < 24; i++)
 	{
 		cube[i].color = sf::Color::White;
 	}
 
-	x_rot = 0.0;
-	y_rot = 0.0;
-	z_rot = 0.0;
+	rotation.x = 0.0;
+	rotation.y = 0.0;
+	rotation.z = 0.0;
 
 	coor_center.first = scr_size.first / 2;
 	coor_center.second = scr_size.second / 2;
 
 	float space_screen_rel = (size / scr_size.first);
 	scale_factor = (1 / space_screen_rel) * cube_scale;
+
+	for (int i = 0; i < 8; i++)
+	{
+		space_vertex.push_back({ 0.0,0.0,0.0 });
+	}
 
 	set_cube_vertex_coordinates();
 }
@@ -31,33 +36,78 @@ Space::~Space()
 
 void Space::rotate(double x, double y, double z)
 {
-	x_rot += x;
-	y_rot += y;
-	z_rot += z;
+	rotation.x += x;
+	rotation.y += y;
+	rotation.z += z;
 
-	if (x_rot >= 360.0)
+	if (rotation.x >= 360.0)
 	{
-		x_rot = x_rot - 360.0;
+		rotation.x = rotation.x - 360.0;
 	}
 
-	if (y_rot >= 360.0)
+	if (rotation.y >= 360.0)
 	{
-		y_rot = y_rot - 360.0;
+		rotation.y = rotation.y - 360.0;
 	}
 
-	if (z_rot >= 360.0)
+	if (rotation.z >= 360.0)
 	{
-		z_rot = z_rot - 360.0;
+		rotation.z = rotation.z - 360.0;
 	}
 }
 
 void Space::set_cube_vertex_coordinates()
 {
-	cube[0] = sf::Vector2f(coor_center.first - ((size/2) * scale_factor), coor_center.second - ((size/2) * scale_factor));
-	cube[7] = sf::Vector2f(coor_center.first - ((size/2) * scale_factor), coor_center.second - ((size/2) * scale_factor));
-	cube[8] = sf::Vector2f(coor_center.first - ((size/2) * scale_factor), coor_center.second - ((size/2) * scale_factor));
+	//------------vertex position for rotation natural angle------------------
 
-	cube[1] = sf::Vector2f(coor_center.first + ((size/2) * scale_factor), coor_center.second - ((size/2) * scale_factor));
+	space_vertex[0].x = (-1) * (size / 2);
+	space_vertex[0].y = (-1) * (size / 2);
+	space_vertex[0].z = (-1) * (size / 2);
+
+	space_vertex[1].x = (1) * (size / 2);
+	space_vertex[1].y = (-1) * (size / 2);
+	space_vertex[1].z = (-1) * (size / 2);
+
+	space_vertex[2].x = (1) * (size / 2);
+	space_vertex[2].y = (1) * (size / 2);
+	space_vertex[2].z = (-1) * (size / 2);
+
+	space_vertex[3].x = (-1) * (size / 2);
+	space_vertex[3].y = (1) * (size / 2);
+	space_vertex[3].z = (-1) * (size / 2);
+
+
+	space_vertex[4].x = (-1) * (size / 2);
+	space_vertex[4].y = (-1) * (size / 2);
+	space_vertex[4].z = (1) * (size / 2);
+
+	space_vertex[5].x = (1) * (size / 2);
+	space_vertex[5].y = (-1) * (size / 2);
+	space_vertex[5].z = (1) * (size / 2);
+
+	space_vertex[6].x = (1) * (size / 2);
+	space_vertex[6].y = (1) * (size / 2);
+	space_vertex[6].z = (1) * (size / 2);
+
+	space_vertex[7].x = (-1) * (size / 2);
+	space_vertex[7].y = (1) * (size / 2);
+	space_vertex[7].z = (1) * (size / 2);
+
+	//-------------------------------------------------------------------
+
+	//-------------natural angles for vertex-----------------------
+
+	sphere_radius = sqrt((space_vertex[0].x * space_vertex[0].x) + (space_vertex[0].y * space_vertex[0].y) + (space_vertex[0].z * space_vertex[0].z));
+
+	//-------------------------------------------------------------
+
+	//screen representation of lines vertex---------------------------------------------------------------------------------
+
+	cube[0] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	cube[7] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	cube[8] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+
+	cube[1] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
 	cube[2] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
 	cube[10] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
 
@@ -86,9 +136,36 @@ void Space::set_cube_vertex_coordinates()
 	cube[15] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
 	cube[21] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
 	cube[22] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+
+	//screen representation of lines vertex---------------------------------------------------------------------------------
+}
+
+void Space::update_cube_vertex()
+{
+
 }
 
 void Space::draw(sf::RenderWindow& rw)
 {
 	rw.draw(cube);
+}
+
+void Space::update()
+{
+	update_cube_vertex();
+}
+
+float Space::get_rotation_x()
+{
+	return rotation.x;
+}
+
+float Space::get_rotation_y()
+{
+	return rotation.y;
+}
+
+float Space::get_rotation_z()
+{
+	return rotation.z;
 }

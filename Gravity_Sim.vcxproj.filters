@@ -27,6 +27,9 @@
     <ClCompile Include="Space.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Vertex3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Particle.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Space.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

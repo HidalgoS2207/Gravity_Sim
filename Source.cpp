@@ -11,7 +11,7 @@ int main()
     Sim_Core sim_core(window);
 
     sf::Clock sim_clock;
-    float sim_clock_rate = 2.0;
+    float sim_clock_rate = 0.05;
 
     while (window.isOpen())
     {
@@ -32,6 +32,8 @@ int main()
         sim_core.draw();
 
         window.display();
+
+        sim_clock.restart();
     }
 
     return 0;
