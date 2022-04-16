@@ -5,7 +5,10 @@ Space::Space(std::pair<float, float> scr_size, unsigned int size)
 	size(size),
 	cube(sf::Lines, 24),
 	scr_size(scr_size),
-	cube_scale(0.7)
+	cube_scale(0.7),
+	rx(RotMatrix::RotAxis::rx),
+	ry(RotMatrix::RotAxis::ry),
+	rz(RotMatrix::RotAxis::rz)
 {
 	for (int i = 0; i < 24; i++)
 	{
@@ -59,15 +62,27 @@ void Space::rotate(double x, double y, double z)
 
 void Space::set_cube_vertex_coordinates()
 {
+	sphere_radius = sqrt(((double(size) / 2) * (double(size) / 2)) + ((double(size) / 2) * (double(size) / 2)) + ((double(size) / 2) * (double(size) / 2)));
+
 	//------------vertex position for rotation natural angle------------------
 
-	space_vertex[0].x = (-1) * (double(size) / 2);
-	space_vertex[0].y = (-1) * (double(size) / 2);
-	space_vertex[0].z = (-1) * (double(size) / 2);
+	//space_vertex[0].x = (-1) * (double(size) / 2);
+	//space_vertex[0].y = (-1) * (double(size) / 2);
+	//space_vertex[0].z = (-1) * (double(size) / 2);
 
-	space_vertex[1].x = (1) * (double(size) / 2);
-	space_vertex[1].y = (-1) * (double(size) / 2);
-	space_vertex[1].z = (-1) * (double(size) / 2);
+	space_vertex[0].x = sphere_radius;
+	rz.rotate(space_vertex[0], double(-45.0));
+	rx.rotate(space_vertex[0], double(-45.0));
+	ry.rotate(space_vertex[0], double(-45.0));
+
+	//space_vertex[1].x = (1) * (double(size) / 2);
+	//space_vertex[1].y = (-1) * (double(size) / 2);
+	//space_vertex[1].z = (-1) * (double(size) / 2);
+
+	space_vertex[0].x = sphere_radius;
+	rz.rotate(space_vertex[0], double(45.0));
+	rx.rotate(space_vertex[0], double(-45.0));
+	ry.rotate(space_vertex[0], double(-45.0));
 
 	space_vertex[2].x = (1) * (double(size) / 2);
 	space_vertex[2].y = (1) * (double(size) / 2);
@@ -96,12 +111,7 @@ void Space::set_cube_vertex_coordinates()
 
 	//-------------------------------------------------------------------
 
-	//-------------natural angles for vertex-----------------------
 
-	sphere_radius = sqrt((space_vertex[0].x * space_vertex[0].x) + (space_vertex[0].y * space_vertex[0].y) + (space_vertex[0].z * space_vertex[0].z));
-
-	natural_vertex_angle[0].z = atan(space_vertex[0].y / space_vertex[0].x);
-	natural_vertex_angle[0].x = atan(space_vertex[0].y / space_vertex[0].x);
 
 	//-------------------------------------------------------------
 

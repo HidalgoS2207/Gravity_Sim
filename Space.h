@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Vertex3D.h"
+#include "RotMat.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -28,6 +29,9 @@ private:
 	std::vector<Vertex3D> space_vertex;
 	std::vector<Vertex3D> natural_vertex_angle;
 	double sphere_radius;
+	RotMatrix rx;
+	RotMatrix ry;
+	RotMatrix rz;
 
 	std::pair<float, float> scr_size;
 	std::pair<float, float> coor_center; //pxls

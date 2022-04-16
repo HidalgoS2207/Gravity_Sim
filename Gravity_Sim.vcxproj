@@ -145,13 +145,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="RotMat.cpp" />
     <ClCompile Include="Sim_Core.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Space.cpp" />
     <ClCompile Include="Vertex3D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="RotMat.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Sim_Core.h" />
     <ClInclude Include="Space.h" />

@@ -30,6 +30,9 @@
     <ClCompile Include="Vertex3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RotMat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Particle.h">
@@ -44,7 +47,7 @@
     <ClInclude Include="Vertex3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix.h">
+    <ClInclude Include="RotMat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
