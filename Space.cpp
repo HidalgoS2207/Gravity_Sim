@@ -1,6 +1,6 @@
 #include "Space.h"
 
-Space::Space(std::pair<float, float> scr_size, unsigned int size)
+Space::Space(std::pair<double, double> scr_size, unsigned int size)
 	:
 	size(size),
 	cube(sf::Lines, 24),
@@ -169,8 +169,8 @@ void Space::set_cube_vertex_coordinates()
 
 	//screen representation of lines vertex---------------------------------------------------------------------------------
 
-	rotation.x = 35.2643940570924;
-	rotation.z = 45;
+	//rotation.x = 35.2643940570924;
+	//rotation.z = 45;
 
 	update_cube_vertex(0, 7, 8, 0);
 	update_cube_vertex(1, 2, 10, 1);
@@ -181,40 +181,6 @@ void Space::set_cube_vertex_coordinates()
 	update_cube_vertex(11, 17, 18, 5);
 	update_cube_vertex(13, 19, 20, 6);
 	update_cube_vertex(15, 21, 22, 7);
-
-	//cube[0] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	//cube[7] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	//cube[8] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-
-	//cube[1] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	//cube[2] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	//cube[10] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-
-	//cube[3] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	//cube[4] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	//cube[12] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-
-	//cube[5] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	//cube[6] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	//cube[14] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-
-
-
-	//cube[9] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	//cube[16] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	//cube[23] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-
-	//cube[11] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	//cube[17] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	//cube[18] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-
-	//cube[13] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	//cube[19] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	//cube[20] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-
-	//cube[15] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	//cube[21] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	//cube[22] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
 
 	//screen representation of lines vertex---------------------------------------------------------------------------------
 }
@@ -242,17 +208,22 @@ void Space::update()
 {
 }
 
-float Space::get_rotation_x()
+double Space::get_rotation_x()
 {
 	return rotation.x;
 }
 
-float Space::get_rotation_y()
+double Space::get_rotation_y()
 {
 	return rotation.y;
 }
 
-float Space::get_rotation_z()
+double Space::get_rotation_z()
 {
 	return rotation.z;
+}
+
+double Space::get_scale_factor()
+{
+	return scale_factor;
 }

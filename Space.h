@@ -11,7 +11,7 @@
 class Space
 {
 public:
-	Space(std::pair<float, float> scr_size, unsigned int size);
+	Space(std::pair<double, double> scr_size, unsigned int size);
 	~Space();
 
 	void x_rotate(double x);
@@ -21,9 +21,11 @@ public:
 	void draw(sf::RenderWindow& rw);
 	void update();
 
-	float get_rotation_x();
-	float get_rotation_y();
-	float get_rotation_z();
+	double get_rotation_x();
+	double get_rotation_y();
+	double get_rotation_z();
+
+	double get_scale_factor();
 private:
 	unsigned int size;
 
@@ -35,11 +37,11 @@ private:
 	RotMatrix ry;
 	RotMatrix rz;
 
-	std::pair<float, float> scr_size;
-	std::pair<float, float> coor_center; //pxls
+	std::pair<double, double> scr_size;
+	std::pair<double, double> coor_center; //pxls
 
-	const float cube_scale; //space occupied in screen by space cube representation
-	float scale_factor; //factor to properly scale cube size to match cube scale
+	const double cube_scale; //space occupied in screen by space cube representation
+	double scale_factor; //factor to properly scale cube size to match cube scale
 
 	sf::VertexArray cube; //2d coordinates for cube graphic projection
 
