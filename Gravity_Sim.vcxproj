@@ -151,6 +151,7 @@
     <ClCompile Include="Vertex3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Sim_Core.h" />
     <ClInclude Include="Space.h" />

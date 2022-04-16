@@ -24,7 +24,8 @@ Space::Space(std::pair<float, float> scr_size, unsigned int size)
 
 	for (int i = 0; i < 8; i++)
 	{
-		space_vertex.push_back({ 0.0,0.0,0.0 });
+		space_vertex.emplace_back();
+		natural_vertex_angle.emplace_back();
 	}
 
 	set_cube_vertex_coordinates();
@@ -60,44 +61,47 @@ void Space::set_cube_vertex_coordinates()
 {
 	//------------vertex position for rotation natural angle------------------
 
-	space_vertex[0].x = (-1) * (size / 2);
-	space_vertex[0].y = (-1) * (size / 2);
-	space_vertex[0].z = (-1) * (size / 2);
+	space_vertex[0].x = (-1) * (double(size) / 2);
+	space_vertex[0].y = (-1) * (double(size) / 2);
+	space_vertex[0].z = (-1) * (double(size) / 2);
 
-	space_vertex[1].x = (1) * (size / 2);
-	space_vertex[1].y = (-1) * (size / 2);
-	space_vertex[1].z = (-1) * (size / 2);
+	space_vertex[1].x = (1) * (double(size) / 2);
+	space_vertex[1].y = (-1) * (double(size) / 2);
+	space_vertex[1].z = (-1) * (double(size) / 2);
 
-	space_vertex[2].x = (1) * (size / 2);
-	space_vertex[2].y = (1) * (size / 2);
-	space_vertex[2].z = (-1) * (size / 2);
+	space_vertex[2].x = (1) * (double(size) / 2);
+	space_vertex[2].y = (1) * (double(size) / 2);
+	space_vertex[2].z = (-1) * (double(size) / 2);
 
-	space_vertex[3].x = (-1) * (size / 2);
-	space_vertex[3].y = (1) * (size / 2);
-	space_vertex[3].z = (-1) * (size / 2);
+	space_vertex[3].x = (-1) * (double(size) / 2);
+	space_vertex[3].y = (1) * (double(size) / 2);
+	space_vertex[3].z = (-1) * (double(size) / 2);
 
 
-	space_vertex[4].x = (-1) * (size / 2);
-	space_vertex[4].y = (-1) * (size / 2);
-	space_vertex[4].z = (1) * (size / 2);
+	space_vertex[4].x = (-1) * (double(size) / 2);
+	space_vertex[4].y = (-1) * (double(size) / 2);
+	space_vertex[4].z = (1) * (double(size) / 2);
 
-	space_vertex[5].x = (1) * (size / 2);
-	space_vertex[5].y = (-1) * (size / 2);
-	space_vertex[5].z = (1) * (size / 2);
+	space_vertex[5].x = (1) * (double(size) / 2);
+	space_vertex[5].y = (-1) * (double(size) / 2);
+	space_vertex[5].z = (1) * (double(size) / 2);
 
-	space_vertex[6].x = (1) * (size / 2);
-	space_vertex[6].y = (1) * (size / 2);
-	space_vertex[6].z = (1) * (size / 2);
+	space_vertex[6].x = (1) * (double(size) / 2);
+	space_vertex[6].y = (1) * (double(size) / 2);
+	space_vertex[6].z = (1) * (double(size) / 2);
 
-	space_vertex[7].x = (-1) * (size / 2);
-	space_vertex[7].y = (1) * (size / 2);
-	space_vertex[7].z = (1) * (size / 2);
+	space_vertex[7].x = (-1) * (double(size) / 2);
+	space_vertex[7].y = (1) * (double(size) / 2);
+	space_vertex[7].z = (1) * (double(size) / 2);
 
 	//-------------------------------------------------------------------
 
 	//-------------natural angles for vertex-----------------------
 
 	sphere_radius = sqrt((space_vertex[0].x * space_vertex[0].x) + (space_vertex[0].y * space_vertex[0].y) + (space_vertex[0].z * space_vertex[0].z));
+
+	natural_vertex_angle[0].z = atan(space_vertex[0].y / space_vertex[0].x);
+	natural_vertex_angle[0].x = atan(space_vertex[0].y / space_vertex[0].x);
 
 	//-------------------------------------------------------------
 

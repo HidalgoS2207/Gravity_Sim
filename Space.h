@@ -3,6 +3,8 @@
 #include <math.h>
 #include <vector>
 
+#include "Vertex3D.h"
+
 #include <SFML/Graphics.hpp>
 
 class Space
@@ -22,9 +24,9 @@ public:
 private:
 	unsigned int size;
 
-	sf::Vector3f rotation;
-	std::vector<sf::Vector3f> space_vertex;
-	std::vector<sf::Vector3f> natural_vertex_angle;
+	Vertex3D rotation;
+	std::vector<Vertex3D> space_vertex;
+	std::vector<Vertex3D> natural_vertex_angle;
 	double sphere_radius;
 
 	std::pair<float, float> scr_size;
