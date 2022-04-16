@@ -4,7 +4,7 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	:
 	rw(rw),
 	tic(0.001),
-	rot_stps(0.0001),
+	rot_stps(0.001),
 	gravitational_constant(6.67430 * (pow(10, -11))),
 	space({ rw.getSize().x,rw.getSize().y }, 3000)
 {
@@ -58,19 +58,19 @@ void Sim_Core::kbd_input()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 	{
-		space.rotate(0, 0, rot_stps);
+		space.z_rotate(rot_stps);
 		signs[2].setString(std::to_string(space.get_rotation_z()));
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
 	{
-		space.rotate(0, rot_stps, 0);
+		space.y_rotate(rot_stps);
 		signs[1].setString(std::to_string(space.get_rotation_y()));
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
 	{
-		space.rotate(rot_stps, 0, 0);
+		space.x_rotate(rot_stps);
 		signs[0].setString(std::to_string(space.get_rotation_x()));
 	}
 }

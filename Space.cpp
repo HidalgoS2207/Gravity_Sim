@@ -5,7 +5,7 @@ Space::Space(std::pair<float, float> scr_size, unsigned int size)
 	size(size),
 	cube(sf::Lines, 24),
 	scr_size(scr_size),
-	cube_scale(0.7),
+	cube_scale(0.5),
 	rx(RotMatrix::RotAxis::rx),
 	ry(RotMatrix::RotAxis::ry),
 	rz(RotMatrix::RotAxis::rz)
@@ -38,26 +38,94 @@ Space::~Space()
 {
 }
 
-void Space::rotate(double x, double y, double z)
+void Space::x_rotate(double x)
 {
 	rotation.x += x;
-	rotation.y += y;
-	rotation.z += z;
 
 	if (rotation.x >= 360.0)
 	{
 		rotation.x = rotation.x - 360.0;
 	}
 
+	rx.rotate(space_vertex[0], x);
+	rx.rotate(space_vertex[1], x);
+	rx.rotate(space_vertex[2], x);
+	rx.rotate(space_vertex[3], x);
+
+	rx.rotate(space_vertex[4], x);
+	rx.rotate(space_vertex[5], x);
+	rx.rotate(space_vertex[6], x);
+	rx.rotate(space_vertex[7], x);
+
+	update_cube_vertex(0, 7, 8, 0);
+	update_cube_vertex(1, 2, 10, 1);
+	update_cube_vertex(3, 4, 12, 2);
+	update_cube_vertex(5, 6, 14, 3);
+
+	update_cube_vertex(9, 16, 23, 4);
+	update_cube_vertex(11, 17, 18, 5);
+	update_cube_vertex(13, 19, 20, 6);
+	update_cube_vertex(15, 21, 22, 7);
+}
+
+void Space::y_rotate(double y)
+{
+	rotation.y += y;
+
 	if (rotation.y >= 360.0)
 	{
 		rotation.y = rotation.y - 360.0;
 	}
 
+	ry.rotate(space_vertex[0], y);
+	ry.rotate(space_vertex[1], y);
+	ry.rotate(space_vertex[2], y);
+	ry.rotate(space_vertex[3], y);
+
+	ry.rotate(space_vertex[4], y);
+	ry.rotate(space_vertex[5], y);
+	ry.rotate(space_vertex[6], y);
+	ry.rotate(space_vertex[7], y);
+
+	update_cube_vertex(0, 7, 8, 0);
+	update_cube_vertex(1, 2, 10, 1);
+	update_cube_vertex(3, 4, 12, 2);
+	update_cube_vertex(5, 6, 14, 3);
+
+	update_cube_vertex(9, 16, 23, 4);
+	update_cube_vertex(11, 17, 18, 5);
+	update_cube_vertex(13, 19, 20, 6);
+	update_cube_vertex(15, 21, 22, 7);
+}
+
+void Space::z_rotate(double z)
+{
+	rotation.z += z;
+
 	if (rotation.z >= 360.0)
 	{
 		rotation.z = rotation.z - 360.0;
 	}
+
+	rz.rotate(space_vertex[0], z);
+	rz.rotate(space_vertex[1], z);
+	rz.rotate(space_vertex[2], z);
+	rz.rotate(space_vertex[3], z);
+
+	rz.rotate(space_vertex[4], z);
+	rz.rotate(space_vertex[5], z);
+	rz.rotate(space_vertex[6], z);
+	rz.rotate(space_vertex[7], z);
+
+	update_cube_vertex(0, 7, 8, 0);
+	update_cube_vertex(1, 2, 10, 1);
+	update_cube_vertex(3, 4, 12, 2);
+	update_cube_vertex(5, 6, 14, 3);
+
+	update_cube_vertex(9, 16, 23, 4);
+	update_cube_vertex(11, 17, 18, 5);
+	update_cube_vertex(13, 19, 20, 6);
+	update_cube_vertex(15, 21, 22, 7);
 }
 
 void Space::set_cube_vertex_coordinates()
@@ -66,23 +134,13 @@ void Space::set_cube_vertex_coordinates()
 
 	//------------vertex position for rotation natural angle------------------
 
-	//space_vertex[0].x = (-1) * (double(size) / 2);
-	//space_vertex[0].y = (-1) * (double(size) / 2);
-	//space_vertex[0].z = (-1) * (double(size) / 2);
+	space_vertex[0].x = (-1) * (double(size) / 2);
+	space_vertex[0].y = (-1) * (double(size) / 2);
+	space_vertex[0].z = (-1) * (double(size) / 2);
 
-	space_vertex[0].x = sphere_radius;
-	rz.rotate(space_vertex[0], double(-45.0));
-	rx.rotate(space_vertex[0], double(-45.0));
-	ry.rotate(space_vertex[0], double(-45.0));
-
-	//space_vertex[1].x = (1) * (double(size) / 2);
-	//space_vertex[1].y = (-1) * (double(size) / 2);
-	//space_vertex[1].z = (-1) * (double(size) / 2);
-
-	space_vertex[0].x = sphere_radius;
-	rz.rotate(space_vertex[0], double(45.0));
-	rx.rotate(space_vertex[0], double(-45.0));
-	ry.rotate(space_vertex[0], double(-45.0));
+	space_vertex[1].x = (1) * (double(size) / 2);
+	space_vertex[1].y = (-1) * (double(size) / 2);
+	space_vertex[1].z = (-1) * (double(size) / 2);
 
 	space_vertex[2].x = (1) * (double(size) / 2);
 	space_vertex[2].y = (1) * (double(size) / 2);
@@ -109,55 +167,71 @@ void Space::set_cube_vertex_coordinates()
 	space_vertex[7].y = (1) * (double(size) / 2);
 	space_vertex[7].z = (1) * (double(size) / 2);
 
-	//-------------------------------------------------------------------
-
-
-
-	//-------------------------------------------------------------
-
 	//screen representation of lines vertex---------------------------------------------------------------------------------
 
-	cube[0] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	cube[7] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	cube[8] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	rotation.x = 35.2643940570924;
+	rotation.z = 45;
 
-	cube[1] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	cube[2] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	cube[10] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	update_cube_vertex(0, 7, 8, 0);
+	update_cube_vertex(1, 2, 10, 1);
+	update_cube_vertex(3, 4, 12, 2);
+	update_cube_vertex(5, 6, 14, 3);
 
-	cube[3] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	cube[4] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	cube[12] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	update_cube_vertex(9, 16, 23, 4);
+	update_cube_vertex(11, 17, 18, 5);
+	update_cube_vertex(13, 19, 20, 6);
+	update_cube_vertex(15, 21, 22, 7);
 
-	cube[5] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	cube[6] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
-	cube[14] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	//cube[0] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	//cube[7] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	//cube[8] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+
+	//cube[1] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	//cube[2] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	//cube[10] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+
+	//cube[3] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	//cube[4] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	//cube[12] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+
+	//cube[5] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	//cube[6] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
+	//cube[14] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second - ((size / 2) * scale_factor));
 
 
 
-	cube[9] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	cube[16] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	cube[23] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+	//cube[9] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+	//cube[16] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+	//cube[23] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
 
-	cube[11] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	cube[17] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	cube[18] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+	//cube[11] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+	//cube[17] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+	//cube[18] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
 
-	cube[13] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	cube[19] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	cube[20] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+	//cube[13] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+	//cube[19] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+	//cube[20] = sf::Vector2f(coor_center.first + ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
 
-	cube[15] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	cube[21] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
-	cube[22] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+	//cube[15] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+	//cube[21] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
+	//cube[22] = sf::Vector2f(coor_center.first - ((size / 2) * scale_factor), coor_center.second + ((size / 2) * scale_factor));
 
 	//screen representation of lines vertex---------------------------------------------------------------------------------
 }
 
-void Space::update_cube_vertex()
+void Space::update_cube_vertex(int va, int vb, int vc, int idx)
 {
+	/*cube[va] = sf::Vector2f(coor_center.first + ((space_vertex[idx].x * sin((rotation.x * PI) / 180)) * scale_factor), coor_center.second + ((space_vertex[idx].z * sin((rotation.z * PI) / 180)) * scale_factor));
+	cube[vb] = sf::Vector2f(coor_center.first + ((space_vertex[idx].x * sin((rotation.x * PI) / 180)) * scale_factor), coor_center.second + ((space_vertex[idx].z * sin((rotation.z * PI) / 180)) * scale_factor));
+	cube[vc] = sf::Vector2f(coor_center.first + ((space_vertex[idx].x * sin((rotation.x * PI) / 180)) * scale_factor), coor_center.second + ((space_vertex[idx].z * sin((rotation.z * PI) / 180)) * scale_factor));*/
 
+	cube[va] = sf::Vector2f(coor_center.first + (space_vertex[idx].x * scale_factor), coor_center.first + (space_vertex[idx].z * scale_factor));
+	cube[vb] = sf::Vector2f(coor_center.first + (space_vertex[idx].x * scale_factor), coor_center.first + (space_vertex[idx].z * scale_factor));
+	cube[vc] = sf::Vector2f(coor_center.first + (space_vertex[idx].x * scale_factor), coor_center.first + (space_vertex[idx].z * scale_factor));
 }
+
+void Space::inverse_kinematic_heu(Vertex3D& v3d, double x1, double y1, double z1, double x0, double y0, double z0)
+{}
 
 void Space::draw(sf::RenderWindow& rw)
 {
@@ -166,7 +240,6 @@ void Space::draw(sf::RenderWindow& rw)
 
 void Space::update()
 {
-	update_cube_vertex();
 }
 
 float Space::get_rotation_x()

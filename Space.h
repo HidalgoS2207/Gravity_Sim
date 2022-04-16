@@ -11,10 +11,12 @@
 class Space
 {
 public:
-	Space(std::pair<float, float> scr_size,unsigned int size);
+	Space(std::pair<float, float> scr_size, unsigned int size);
 	~Space();
 
-	void rotate(double x, double y, double z);
+	void x_rotate(double x);
+	void y_rotate(double y);
+	void z_rotate(double z);
 
 	void draw(sf::RenderWindow& rw);
 	void update();
@@ -42,5 +44,6 @@ private:
 	sf::VertexArray cube; //2d coordinates for cube graphic projection
 
 	void set_cube_vertex_coordinates();
-	void update_cube_vertex();
+	void update_cube_vertex(int va,int vb,int vc,int idx);
+	void inverse_kinematic_heu(Vertex3D& v3d,double x1, double y1, double z1,double x0,double y0,double z0);
 };
