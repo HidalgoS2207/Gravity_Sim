@@ -227,3 +227,8 @@ double Space::get_scale_factor()
 {
 	return scale_factor;
 }
+
+double Space::get_size()
+{
+	return size;
+}

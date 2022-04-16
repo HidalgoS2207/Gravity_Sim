@@ -2,8 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Particle.h"
 #include "Space.h"
+#include "Particle_System.h"
 
 #include <vector>
 #include <math.h>
@@ -11,6 +11,7 @@
 #include <iostream>
 #include <utility>
 #include <string>
+#include <random>
 
 class Sim_Core
 {
@@ -32,7 +33,6 @@ private:
 
 	std::vector<sf::Text> signs;
 
-	std::vector<Particle*> particles_system;
 	Space space;
 
 	const double gravitational_constant;
@@ -41,6 +41,8 @@ private:
 
 	void set_sign(sf::Font& font , sf::Text & to,std::string text,int size, int x_pos,int y_pos);
 	void kbd_input();
+	void generate_particles();
+	
 
 	//---------------------------------
 

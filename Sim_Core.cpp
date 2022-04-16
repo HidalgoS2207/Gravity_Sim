@@ -25,6 +25,8 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	set_sign(font1, signs[2], "0.0", 15, rw.getSize().x - 100, rw.getSize().y - 20);
 
 	//------------------------------------------------------------------------------
+
+	generate_particles();
 }
 
 Sim_Core::~Sim_Core()
@@ -33,7 +35,7 @@ Sim_Core::~Sim_Core()
 void Sim_Core::update()
 {
 	kbd_input();
-	space.update();
+	//space.update();
 }
 
 void Sim_Core::draw()
@@ -44,6 +46,8 @@ void Sim_Core::draw()
 	{
 		rw.draw(signs[i]);
 	}
+
+
 }
 
 void Sim_Core::set_sign(sf::Font& font, sf::Text& to, std::string text, int size, int x_pos, int y_pos)
@@ -73,4 +77,9 @@ void Sim_Core::kbd_input()
 		space.x_rotate(rot_stps);
 		signs[0].setString(std::to_string(space.get_rotation_x()));
 	}
+}
+
+void Sim_Core::generate_particles()
+{
+
 }

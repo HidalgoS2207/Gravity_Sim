@@ -26,6 +26,7 @@ public:
 	double get_rotation_z();
 
 	double get_scale_factor();
+	double get_size();
 private:
 	unsigned int size;
 
