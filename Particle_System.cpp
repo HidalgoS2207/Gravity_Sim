@@ -35,7 +35,10 @@ void Particle_System::update(double tic)
 {
 	for (auto& p : particles)
 	{
-		p->calc_interactions(*this);
+		p->update(tic,space_size);
+
+		p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
+		p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
 	}
 }
 
@@ -45,6 +48,11 @@ void Particle_System::draw()
 	{
 		rw.draw(&(p->get_proy_position()), 1, sf::PrimitiveType::Points);
 	}
+}
+
+int Particle_System::get_num_particles()
+{
+	return particles.size();
 }
 
 void Particle_System::x_rotate(double x)
@@ -59,6 +67,7 @@ void Particle_System::x_rotate(double x)
 	for (auto& p : particles)
 	{
 		rx.rotate(p->get_position(), x);
+		rx.rotate(p->get_speed(), x);
 		p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
 		p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
 	}
@@ -76,6 +85,7 @@ void Particle_System::y_rotate(double y)
 	for (auto& p : particles)
 	{
 		ry.rotate(p->get_position(), y);
+		ry.rotate(p->get_speed(), y);
 		p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
 		p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
 	}
@@ -93,6 +103,7 @@ void Particle_System::z_rotate(double z)
 	for (auto& p : particles)
 	{
 		rz.rotate(p->get_position(), z);
+		rz.rotate(p->get_speed(), z);
 		p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
 		p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
 	}
@@ -103,6 +114,7 @@ void Particle_System::generate_random_particles(int num_particles)
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_real_distribution<> dis(((-1) * (space_size / 2)) * 0.85, ((1) * (space_size / 2)) * 0.85);
+	std::uniform_real_distribution<> spd_dis(-5.0, 5.0);
 
 	for (int i = 0; i < num_particles; i++)
 	{
@@ -115,7 +127,12 @@ void Particle_System::generate_random_particles(int num_particles)
 		double vx_rep = (coor_center.first + (x_pos * scale_factor));
 		double vy_rep = (coor_center.second + (y_pos * scale_factor));
 
+		double x_spd = spd_dis(gen);
+		double y_spd = spd_dis(gen);
+		double z_spd = spd_dis(gen);
+
 		p->set_position(x_pos, y_pos, z_pos, vx_rep, vy_rep);
+		p->set_speed(x_spd, y_spd, z_spd);
 
 		particles.push_back(p);
 	}

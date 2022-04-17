@@ -11,7 +11,7 @@ int main()
     Sim_Core sim_core(window);
 
     sf::Clock sim_clock;
-    float sim_clock_rate = 0.05;
+    float sim_clock_rate = 0.001;
 
     while (window.isOpen())
     {

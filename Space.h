@@ -5,6 +5,7 @@
 
 #include "Vertex3D.h"
 #include "RotMat.h"
+#include "Plane.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -40,6 +41,8 @@ private:
 
 	std::pair<double, double> scr_size;
 	std::pair<double, double> coor_center; //pxls
+
+	std::vector<Plane> planes;
 
 	const double cube_scale; //space occupied in screen by space cube representation
 	double scale_factor; //factor to properly scale cube size to match cube scale

@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Particle_System.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="RotMat.cpp" />
     <ClCompile Include="Sim_Core.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -154,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Particle_System.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="RotMat.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Sim_Core.h" />

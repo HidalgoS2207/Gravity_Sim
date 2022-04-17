@@ -32,6 +32,11 @@ Space::Space(std::pair<double, double> scr_size, unsigned int size)
 	}
 
 	set_cube_vertex_coordinates();
+
+	for (int i = 0; i < 6; i++)
+	{
+		planes.emplace_back();
+	}
 }
 
 Space::~Space()

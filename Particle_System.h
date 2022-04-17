@@ -17,6 +17,7 @@ public:
 
 	void update(double tic);
 	void draw();
+	int get_num_particles();
 
 	void x_rotate(double x);
 	void y_rotate(double y);

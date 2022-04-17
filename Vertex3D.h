@@ -9,6 +9,8 @@ public:
 	double x;
 	double y;
 	double z;
+
+	void reset();
 private:
 
 };

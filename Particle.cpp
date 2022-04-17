@@ -6,6 +6,10 @@ Particle::Particle(double mass, double radius)
 	radius(radius)
 {
 	v_rep.color = sf::Color::Red;
+
+	speed.reset();
+	force.reset();
+	position.reset();
 }
 
 Particle::~Particle()
@@ -36,9 +40,17 @@ sf::Vertex& Particle::get_proy_position()
 	return v_rep;
 }
 
-void Particle::calc_interactions(Particle_System& ps)
+void Particle::update(double tic, double limit)
 {
-	for(int i = 0 ; i < )
+	speed.x = (speed.x + ((force.x / mass) * tic)) * (check_bounce(abs(position.x), limit / 2.0));
+	speed.y = (speed.y + ((force.y / mass) * tic)) * (check_bounce(abs(position.y), limit / 2.0));
+	speed.z = (speed.z + ((force.z / mass) * tic)) * (check_bounce(abs(position.z), limit / 2.0));
+
+	correct_pos(limit / 2.0);
+
+	position.x = position.x + (speed.x * tic);
+	position.y = position.y + (speed.y * tic);
+	position.z = position.z + (speed.z * tic);
 }
 
 void Particle::set_mass(double m)
@@ -58,7 +70,7 @@ void Particle::set_speed(double x, double y, double z)
 	speed.z = z;
 }
 
-void Particle::set_position(double x, double y, double z, double vx,double vy)
+void Particle::set_position(double x, double y, double z, double vx, double vy)
 {
 	position.x = x;
 	position.y = y;
@@ -66,4 +78,16 @@ void Particle::set_position(double x, double y, double z, double vx,double vy)
 
 	v_rep.position.x = vx;
 	v_rep.position.y = vy;
+}
+
+int Particle::check_bounce(double pos, double limit)
+{
+	return pos > limit ? (-1) : 1;
+}
+
+void Particle::correct_pos(double limit)
+{
+	position.x = abs(position.x) > (limit) ? (limit * (position.x / (abs(position.x)))) : position.x;
+	position.y = abs(position.y) > (limit) ? (limit * (position.y / (abs(position.y)))) : position.y;
+	position.z = abs(position.z) > (limit) ? (limit * (position.z / (abs(position.z)))) : position.z;
 }
