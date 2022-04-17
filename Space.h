@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <vector>
+#include <iostream>
 
 #include "Vertex3D.h"
 #include "RotMat.h"
@@ -52,4 +53,5 @@ private:
 	void set_cube_vertex_coordinates();
 	void update_cube_vertex(int va,int vb,int vc,int idx);
 	void inverse_kinematic_heu(Vertex3D& v3d,double x1, double y1, double z1,double x0,double y0,double z0);
+	void set_space_plane(double px, double py,double pz,double nx,double ny,double nz);
 };

@@ -33,10 +33,20 @@ Space::Space(std::pair<double, double> scr_size, unsigned int size)
 
 	set_cube_vertex_coordinates();
 
-	for (int i = 0; i < 6; i++)
+	set_space_plane(((1.0) * size / 2.0), 0, 0, -1.0, 0, 0);
+	set_space_plane(((-1.0) * size / 2.0), 0, 0, -1.0, 0, 0);
+	set_space_plane(0, ((1.0) * size / 2.0), 0, 0, -1.0, 0);
+	set_space_plane(0, ((-1.0) * size / 2.0), 0, 0, -1.0, 0);
+	set_space_plane(0, 0, ((1.0) * size / 2.0), 0, 0, -1.0);
+	set_space_plane(0, 0, ((-1.0) * size / 2.0), 0, 0, -1.0);
+
+	for (auto& pl : planes)
 	{
-		planes.emplace_back();
+		std::cout <<"\nNormal : " << pl.get_normal().x << " - " << pl.get_normal().y << " - " << pl.get_normal().z << '\n';
+		std::cout << "Point : " << pl.get_point().x << " - " << pl.get_point().y << " - " << pl.get_point().z << '\n';
 	}
+
+	std::cout << "\n\n\n";
 }
 
 Space::~Space()
@@ -203,6 +213,18 @@ void Space::update_cube_vertex(int va, int vb, int vc, int idx)
 
 void Space::inverse_kinematic_heu(Vertex3D& v3d, double x1, double y1, double z1, double x0, double y0, double z0)
 {}
+
+void Space::set_space_plane(double px, double py, double pz, double nx, double ny, double nz)
+{
+	Vertex3D point;
+	Vertex3D normal;
+
+	point.reset();
+	normal.reset();
+	point.set_values(px, py, pz);
+	normal.set_values(nx, ny, nz);
+	planes.emplace_back(normal, point);
+}
 
 void Space::draw(sf::RenderWindow& rw)
 {
