@@ -36,6 +36,11 @@ sf::Vertex& Particle::get_proy_position()
 	return v_rep;
 }
 
+void Particle::calc_interactions(Particle_System& ps)
+{
+	for(int i = 0 ; i < )
+}
+
 void Particle::set_mass(double m)
 {
 	mass = m;

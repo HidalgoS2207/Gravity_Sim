@@ -30,15 +30,19 @@ Particle_System::~Particle_System()
 	particles.clear();
 }
 
-void Particle_System::update()
+void Particle_System::update(double tic)
 {
+	for (auto& p : particles)
+	{
+		p->calc_interactions(*this);
+	}
 }
 
 void Particle_System::draw()
 {
-	for (auto& x : particles)
+	for (auto& p : particles)
 	{
-		rw.draw(&(x->get_proy_position()), 1, sf::PrimitiveType::Points);
+		rw.draw(&(p->get_proy_position()), 1, sf::PrimitiveType::Points);
 	}
 }
 

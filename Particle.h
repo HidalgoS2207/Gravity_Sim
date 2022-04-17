@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vertex3D.h"
+#include "Particle_System.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -15,6 +16,7 @@ public:
 	Vertex3D& get_speed();
 	Vertex3D& get_position();
 	sf::Vertex& get_proy_position();
+	void calc_interactions(Particle_System& ps);
 
 	void set_mass(double m);
 	void set_radius(double r);

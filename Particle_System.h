@@ -14,7 +14,7 @@ public:
 	Particle_System(double space_size,double scale_factor,sf::RenderWindow& rw);
 	~Particle_System();
 
-	void update();
+	void update(double tic);
 	void draw();
 
 	void x_rotate(double x);

@@ -3,7 +3,7 @@
 Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	:
 	rw(rw),
-	tic(0.001),
+	tic(0.01),
 	rot_stps(0.001),
 	gravitational_constant(6.67430 * (pow(10, -11))),
 	space({ rw.getSize().x,rw.getSize().y }, 1000000),
@@ -37,6 +37,7 @@ void Sim_Core::update()
 {
 	kbd_input();
 	//space.update();
+	particle_system.update();
 }
 
 void Sim_Core::draw()
