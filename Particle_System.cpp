@@ -7,7 +7,8 @@ Particle_System::Particle_System(double space_size, double scale_factor, sf::Ren
 	scale_factor(scale_factor),
 	rx(RotMatrix::RotAxis::rx),
 	ry(RotMatrix::RotAxis::ry),
-	rz(RotMatrix::RotAxis::rz)
+	rz(RotMatrix::RotAxis::rz),
+	gravitational_constant(6.67430 * (pow(10, -11)))
 {
 	screen_size.first = rw.getSize().x;
 	screen_size.second = rw.getSize().y;

@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <random>
+#include <math.h>
 
 class Particle_System
 {
@@ -24,6 +25,8 @@ public:
 	void generate_random_particles(int num_particles);
 private:
 	std::vector<Particle*> particles;
+
+	const double gravitational_constant;
 
 	sf::RenderWindow& rw;
 	std::pair<double, double> screen_size;

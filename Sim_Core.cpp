@@ -6,7 +6,7 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	tic(0.01),
 	rot_stps(0.001),
 	gravitational_constant(6.67430 * (pow(10, -11))),
-	space({ rw.getSize().x,rw.getSize().y }, 1000000),
+	space({ rw.getSize().x,rw.getSize().y }, 2000000),
 	particle_system(space.get_size(), space.get_scale_factor(),rw)
 {
 	std::cout << gravitational_constant << '\n';
