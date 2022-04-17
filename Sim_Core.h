@@ -34,15 +34,14 @@ private:
 	std::vector<sf::Text> signs;
 
 	Space space;
+	Particle_System particle_system;
 
 	const double gravitational_constant;
 
 	//-------METHODS-------------------
 
 	void set_sign(sf::Font& font , sf::Text & to,std::string text,int size, int x_pos,int y_pos);
-	void kbd_input();
-	void generate_particles();
-	
+	void kbd_input();	
 
 	//---------------------------------
 

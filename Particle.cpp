@@ -5,7 +5,7 @@ Particle::Particle(double mass, double radius)
 	mass(mass),
 	radius(radius)
 {
-	vx.color = sf::Color::Red;
+	v_rep.color = sf::Color::Red;
 }
 
 Particle::~Particle()
