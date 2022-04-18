@@ -16,9 +16,10 @@ Particle_System::Particle_System(double space_size, double scale_factor, sf::Ren
 	coor_center.first = screen_size.first / 2.0;
 	coor_center.second = screen_size.second / 2.0;
 
-	rotation.x = 0.0;
-	rotation.y = 0.0;
-	rotation.z = 0.0;
+	rotation.reset();
+	camera_angle.reset();
+
+	camera_angle.x = 90;
 }
 
 Particle_System::~Particle_System()
@@ -35,10 +36,11 @@ void Particle_System::update(double tic)
 {
 	for (auto& p : particles)
 	{
-		p->update(tic,space_size);
+		p->update(tic, space_size);
 
-		p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
-		p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
+		//p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
+		//p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
+		update_projection(p);
 	}
 }
 
@@ -68,6 +70,7 @@ void Particle_System::x_rotate(double x)
 	{
 		rx.rotate(p->get_position(), x);
 		rx.rotate(p->get_speed(), x);
+		//update_projection(p,CameraRotAngle::crx);
 		p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
 		p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
 	}
@@ -86,6 +89,7 @@ void Particle_System::y_rotate(double y)
 	{
 		ry.rotate(p->get_position(), y);
 		ry.rotate(p->get_speed(), y);
+		//update_projection(p,CameraRotAngle::cry);
 		p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
 		p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
 	}
@@ -104,8 +108,54 @@ void Particle_System::z_rotate(double z)
 	{
 		rz.rotate(p->get_position(), z);
 		rz.rotate(p->get_speed(), z);
+		//update_projection(p,CameraRotAngle::crz);
 		p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
 		p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
+	}
+}
+
+void Particle_System::camera_x_rotate(double x)
+{
+	camera_angle.x += x;
+
+	if (camera_angle.x >= 360.0)
+	{
+		camera_angle.x = camera_angle.x - 360.0;
+	}
+
+	for (auto& p : particles)
+	{
+		update_projection(p);
+	}
+}
+
+void Particle_System::camera_y_rotate(double y)
+{
+	camera_angle.y += y;
+
+	if (camera_angle.y >= 360.0)
+	{
+		camera_angle.y = camera_angle.y - 360.0;
+	}
+
+	for (auto& p : particles)
+	{
+		update_projection(p);
+	}
+}
+
+void Particle_System::camera_z_rotate(double z)
+{
+	camera_angle.z += z;
+
+	if (camera_angle.z >= 360.0)
+	{
+		camera_angle.z = camera_angle.z - 360.0;
+	}
+
+	for (auto& p : particles)
+	{
+		update_projection(p);
 	}
 }
 
@@ -136,4 +186,10 @@ void Particle_System::generate_random_particles(int num_particles)
 
 		particles.push_back(p);
 	}
+}
+
+void Particle_System::update_projection(Particle* p)
+{
+	p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor) + (p->get_position().z * scale_factor * (0.5 * cos(camera_angle.z * PI / 180))));
+	p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor) + (p->get_position().z * scale_factor * (0.5 * sin(camera_angle.z * PI / 180))));
 }

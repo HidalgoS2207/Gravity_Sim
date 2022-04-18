@@ -11,6 +11,13 @@
 
 class Particle_System
 {
+private:
+	enum CameraRotAngle
+	{
+		crx,
+		cry,
+		crz
+	};
 public:
 	Particle_System(double space_size,double scale_factor,sf::RenderWindow& rw);
 	~Particle_System();
@@ -22,6 +29,10 @@ public:
 	void x_rotate(double x);
 	void y_rotate(double y);
 	void z_rotate(double z);
+
+	void camera_x_rotate(double x);
+	void camera_y_rotate(double y);
+	void camera_z_rotate(double z);
 
 	void generate_random_particles(int num_particles);
 private:
@@ -40,5 +51,8 @@ private:
 	RotMatrix ry;
 	RotMatrix rz;
 
-	Vertex3D rotation;	
+	Vertex3D camera_angle;
+	Vertex3D rotation;
+
+	void update_projection(Particle * p);
 };

@@ -6,7 +6,7 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	tic(0.01),
 	rot_stps(0.001),
 	gravitational_constant(6.67430 * (pow(10, -11))),
-	space({ rw.getSize().x,rw.getSize().y }, 10000),
+	space({ rw.getSize().x,rw.getSize().y }, 5000),
 	particle_system(space.get_size(), space.get_scale_factor(),rw)
 {
 	std::cout << gravitational_constant << '\n';
@@ -27,7 +27,7 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 
 	//------------------------------------------------------------------------------
 
-	particle_system.generate_random_particles(1500);
+	particle_system.generate_random_particles(200);
 }
 
 Sim_Core::~Sim_Core()
@@ -64,21 +64,24 @@ void Sim_Core::kbd_input()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 	{
 		space.z_rotate(rot_stps);
-		particle_system.z_rotate(rot_stps);
+		//particle_system.z_rotate(rot_stps);
+		particle_system.camera_x_rotate(rot_stps);
 		signs[2].setString(std::to_string(space.get_rotation_z()));
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
 	{
 		space.y_rotate(rot_stps);
-		particle_system.y_rotate(rot_stps);
+		//particle_system.y_rotate(rot_stps);
+		particle_system.camera_y_rotate(rot_stps);
 		signs[1].setString(std::to_string(space.get_rotation_y()));
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
 	{
 		space.x_rotate(rot_stps);
-		particle_system.x_rotate(rot_stps);
+		//particle_system.x_rotate(rot_stps);
+		particle_system.camera_z_rotate(rot_stps);
 		signs[0].setString(std::to_string(space.get_rotation_x()));
 	}
 }
