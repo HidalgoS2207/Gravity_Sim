@@ -34,16 +34,16 @@ Space::Space(std::pair<double, double> scr_size, unsigned int size)
 	set_cube_vertex_coordinates();
 
 	set_space_plane(((1.0) * size / 2.0), 0, 0, -1.0, 0, 0);
-	set_space_plane(((-1.0) * size / 2.0), 0, 0, -1.0, 0, 0);
+	set_space_plane(((-1.0) * size / 2.0), 0, 0, 1.0, 0, 0);
 	set_space_plane(0, ((1.0) * size / 2.0), 0, 0, -1.0, 0);
-	set_space_plane(0, ((-1.0) * size / 2.0), 0, 0, -1.0, 0);
+	set_space_plane(0, ((-1.0) * size / 2.0), 0, 0, 1.0, 0);
 	set_space_plane(0, 0, ((1.0) * size / 2.0), 0, 0, -1.0);
-	set_space_plane(0, 0, ((-1.0) * size / 2.0), 0, 0, -1.0);
+	set_space_plane(0, 0, ((-1.0) * size / 2.0), 0, 0, 1.0); 
 
 	for (auto& pl : planes)
 	{
-		std::cout <<"\nNormal : " << pl.get_normal().x << " - " << pl.get_normal().y << " - " << pl.get_normal().z << '\n';
-		std::cout << "Point : " << pl.get_point().x << " - " << pl.get_point().y << " - " << pl.get_point().z << '\n';
+		std::cout <<"\nNormal : " << pl->get_normal().x << " - " << pl->get_normal().y << " - " << pl->get_normal().z << '\n';
+		std::cout << "Point : " << pl->get_point().x << " - " << pl->get_point().y << " - " << pl->get_point().z << '\n';
 	}
 
 	std::cout << "\n\n\n";
@@ -51,6 +51,10 @@ Space::Space(std::pair<double, double> scr_size, unsigned int size)
 
 Space::~Space()
 {
+	for (int i = 0; i < planes.size(); i++)
+	{
+		delete planes[i];
+	}
 }
 
 void Space::x_rotate(double x)
@@ -223,7 +227,10 @@ void Space::set_space_plane(double px, double py, double pz, double nx, double n
 	normal.reset();
 	point.set_values(px, py, pz);
 	normal.set_values(nx, ny, nz);
-	planes.emplace_back(normal, point);
+
+	Plane* p = new Plane(normal, point);
+
+	planes.push_back(p);
 }
 
 void Space::draw(sf::RenderWindow& rw)

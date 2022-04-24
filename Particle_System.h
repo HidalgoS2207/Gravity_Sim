@@ -3,6 +3,7 @@
 #include "Particle.h"
 #include "RotMat.h"
 #include "Vertex3D.h"
+#include "Plane.h"
 
 #include <SFML/Graphics.hpp>
 
