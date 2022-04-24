@@ -38,9 +38,9 @@ void Particle_System::update(double tic)
 	{
 		p->update(tic, space_size);
 
-		//p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
-		//p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
-		update_projection(p);
+		p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
+		p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
+		//update_projection(p);
 	}
 }
 
@@ -190,6 +190,6 @@ void Particle_System::generate_random_particles(int num_particles)
 
 void Particle_System::update_projection(Particle* p)
 {
-	p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor) + (p->get_position().z * scale_factor * (0.5 * cos(camera_angle.z * PI / 180))));
-	p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor) + (p->get_position().z * scale_factor * (0.5 * sin(camera_angle.z * PI / 180))));
+	//p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor) + (p->get_position().z * scale_factor * (0.5 * cos(camera_angle.z * PI / 180))));
+	//p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor) + (p->get_position().z * scale_factor * (0.5 * sin(camera_angle.z * PI / 180))));
 }
