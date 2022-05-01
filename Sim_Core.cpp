@@ -64,7 +64,7 @@ void Sim_Core::kbd_input()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 	{
 		space.z_rotate(rot_stps);
-		//particle_system.z_rotate(rot_stps);
+		particle_system.z_rotate(rot_stps);
 		particle_system.camera_x_rotate(rot_stps);
 		signs[2].setString(std::to_string(space.get_rotation_z()));
 	}
@@ -72,7 +72,7 @@ void Sim_Core::kbd_input()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
 	{
 		space.y_rotate(rot_stps);
-		//particle_system.y_rotate(rot_stps);
+		particle_system.y_rotate(rot_stps);
 		particle_system.camera_y_rotate(rot_stps);
 		signs[1].setString(std::to_string(space.get_rotation_y()));
 	}
@@ -80,7 +80,7 @@ void Sim_Core::kbd_input()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
 	{
 		space.x_rotate(rot_stps);
-		//particle_system.x_rotate(rot_stps);
+		particle_system.x_rotate(rot_stps);
 		particle_system.camera_z_rotate(rot_stps);
 		signs[0].setString(std::to_string(space.get_rotation_x()));
 	}
