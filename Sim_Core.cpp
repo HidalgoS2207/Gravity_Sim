@@ -27,7 +27,7 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 
 	//------------------------------------------------------------------------------
 
-	particle_system.generate_random_particles(3000);
+	particle_system.generate_random_particles(100);
 }
 
 Sim_Core::~Sim_Core()

@@ -22,6 +22,10 @@ Space::Space(std::pair<double, double> scr_size, unsigned int size)
 	coor_center.first = scr_size.first / 2;
 	coor_center.second = scr_size.second / 2;
 
+	focal_point.x = coor_center.first;
+	focal_point.z = coor_center.second;
+	focal_point.y = (-1.0) * (size);
+
 	float space_screen_rel = (size / scr_size.first);
 	scale_factor = (1 / space_screen_rel) * cube_scale;
 
@@ -38,11 +42,11 @@ Space::Space(std::pair<double, double> scr_size, unsigned int size)
 	set_space_plane(0, ((1.0) * size / 2.0), 0, 0, -1.0, 0);
 	set_space_plane(0, ((-1.0) * size / 2.0), 0, 0, 1.0, 0);
 	set_space_plane(0, 0, ((1.0) * size / 2.0), 0, 0, -1.0);
-	set_space_plane(0, 0, ((-1.0) * size / 2.0), 0, 0, 1.0); 
+	set_space_plane(0, 0, ((-1.0) * size / 2.0), 0, 0, 1.0);
 
 	for (auto& pl : planes)
 	{
-		std::cout <<"\nNormal : " << pl->get_normal().x << " - " << pl->get_normal().y << " - " << pl->get_normal().z << '\n';
+		std::cout << "\nNormal : " << pl->get_normal().x << " - " << pl->get_normal().y << " - " << pl->get_normal().z << '\n';
 		std::cout << "Point : " << pl->get_point().x << " - " << pl->get_point().y << " - " << pl->get_point().z << '\n';
 	}
 
@@ -210,9 +214,9 @@ void Space::update_cube_vertex(int va, int vb, int vc, int idx)
 	cube[vb] = sf::Vector2f(coor_center.first + ((space_vertex[idx].x * sin((rotation.x * PI) / 180)) * scale_factor), coor_center.second + ((space_vertex[idx].z * sin((rotation.z * PI) / 180)) * scale_factor));
 	cube[vc] = sf::Vector2f(coor_center.first + ((space_vertex[idx].x * sin((rotation.x * PI) / 180)) * scale_factor), coor_center.second + ((space_vertex[idx].z * sin((rotation.z * PI) / 180)) * scale_factor));*/
 
-	cube[va] = sf::Vector2f(coor_center.first + (space_vertex[idx].x * scale_factor), coor_center.first + (space_vertex[idx].z * scale_factor));
-	cube[vb] = sf::Vector2f(coor_center.first + (space_vertex[idx].x * scale_factor), coor_center.first + (space_vertex[idx].z * scale_factor));
-	cube[vc] = sf::Vector2f(coor_center.first + (space_vertex[idx].x * scale_factor), coor_center.first + (space_vertex[idx].z * scale_factor));
+	cube[va] = sf::Vector2f(coor_center.first + (((space_vertex[idx].x / focal_point.y) * space_vertex[idx].x) * scale_factor), coor_center.second + (((space_vertex[idx].z / focal_point.y)* space_vertex[idx].z) * scale_factor));
+	cube[vb] = sf::Vector2f(coor_center.first + (((space_vertex[idx].x / focal_point.y) * space_vertex[idx].x) * scale_factor), coor_center.second + (((space_vertex[idx].z / focal_point.y) * space_vertex[idx].z) * scale_factor));
+	cube[vc] = sf::Vector2f(coor_center.first + (((space_vertex[idx].x / focal_point.y) * space_vertex[idx].x) * scale_factor), coor_center.second + (((space_vertex[idx].z / focal_point.y) * space_vertex[idx].z) * scale_factor));
 }
 
 void Space::inverse_kinematic_heu(Vertex3D& v3d, double x1, double y1, double z1, double x0, double y0, double z0)

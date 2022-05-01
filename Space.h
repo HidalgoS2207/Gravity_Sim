@@ -33,6 +33,7 @@ private:
 	unsigned int size;
 
 	Vertex3D rotation;
+	Vertex3D focal_point;
 	std::vector<Vertex3D> space_vertex;
 	std::vector<Vertex3D> natural_vertex_angle;
 	double sphere_radius;
