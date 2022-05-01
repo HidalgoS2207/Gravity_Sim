@@ -13,7 +13,7 @@
 class Space
 {
 public:
-	Space(std::pair<double, double> scr_size, unsigned int size);
+	Space(std::pair<double, double> scr_size, int size);
 	~Space();
 
 	void x_rotate(double x);
@@ -30,7 +30,7 @@ public:
 	double get_scale_factor();
 	double get_size();
 private:
-	unsigned int size;
+	int size;
 
 	Vertex3D rotation;
 	Vertex3D focal_point;
