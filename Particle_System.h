@@ -39,6 +39,8 @@ public:
 private:
 	std::vector<Particle*> particles;
 
+	Vertex3D focal_point;
+
 	const double gravitational_constant;
 
 	sf::RenderWindow& rw;

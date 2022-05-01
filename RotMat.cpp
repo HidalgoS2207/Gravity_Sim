@@ -53,13 +53,13 @@ void RotMatrix::set_angle(double ang)
 	{
 	case RotMatrix::RotAxis::rx:
 	{
-		mat[0][0] = 1;
+		mat[0][0] = 1.0;
 		mat[0][1] = 0;
 		mat[0][2] = 0;
 
 		mat[1][0] = 0;
 		mat[1][1] = cos(ang);
-		mat[1][2] = (-1)*sin(ang);
+		mat[1][2] = (-1.0)*sin(ang);
 
 		mat[2][0] = 0;
 		mat[2][1] = sin(ang);
@@ -76,7 +76,7 @@ void RotMatrix::set_angle(double ang)
 		mat[1][1] = 1;
 		mat[1][2] = 0;
 
-		mat[2][0] = (-1)*sin(ang);
+		mat[2][0] = (-1.0)*sin(ang);
 		mat[2][1] = 0;
 		mat[2][2] = cos(ang);
 	}
@@ -84,7 +84,7 @@ void RotMatrix::set_angle(double ang)
 	case RotMatrix::RotAxis::rz:
 	{
 		mat[0][0] = cos(ang);
-		mat[0][1] = (-1)*sin(ang);
+		mat[0][1] = (-1.0)*sin(ang);
 		mat[0][2] = 0;
 
 		mat[1][0] = sin(ang);
@@ -93,7 +93,7 @@ void RotMatrix::set_angle(double ang)
 
 		mat[2][0] = 0;
 		mat[2][1] = 0;
-		mat[2][2] = 1;
+		mat[2][2] = 1.0;
 	}
 	break;
 	default:

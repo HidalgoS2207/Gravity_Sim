@@ -19,6 +19,10 @@ Particle_System::Particle_System(double space_size, double scale_factor, sf::Ren
 	rotation.reset();
 	camera_angle.reset();
 
+	focal_point.x = coor_center.first;
+	focal_point.z = coor_center.second;
+	focal_point.y = (2.0) * (space_size);
+
 	camera_angle.x = 90;
 }
 
@@ -38,9 +42,9 @@ void Particle_System::update(double tic)
 	{
 		p->update(tic, space_size);
 
-		p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
-		p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
-		//update_projection(p);
+		//p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
+		//p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
+		update_projection(p);
 	}
 }
 
@@ -190,6 +194,12 @@ void Particle_System::generate_random_particles(int num_particles)
 
 void Particle_System::update_projection(Particle* p)
 {
-	//p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor) + (p->get_position().z * scale_factor * (0.5 * cos(camera_angle.z * PI / 180))));
-	//p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor) + (p->get_position().z * scale_factor * (0.5 * sin(camera_angle.z * PI / 180))));
+	double deep = std::abs(focal_point.y - p->get_position().y) / focal_point.y;
+
+	//cube[va] = sf::Vector2f(focal_point.x + ((std::abs(deep) * space_vertex[idx].x) * scale_factor), focal_point.z + ((std::abs(deep) * space_vertex[idx].z) * scale_factor));
+	//cube[vb] = sf::Vector2f(focal_point.x + ((std::abs(deep) * space_vertex[idx].x) * scale_factor), focal_point.z + ((std::abs(deep) * space_vertex[idx].z) * scale_factor));
+	//cube[vc] = sf::Vector2f(focal_point.x + ((std::abs(deep) * space_vertex[idx].x) * scale_factor), focal_point.z + ((std::abs(deep) * space_vertex[idx].z) * scale_factor));
+
+	p->get_proy_position().position.x = (focal_point.x + ((p->get_position().x * std::abs(deep)) * scale_factor));
+	p->get_proy_position().position.y = (focal_point.z + ((p->get_position().z * std::abs(deep)) * scale_factor));
 }

@@ -32,6 +32,8 @@ public:
 private:
 	int size;
 
+	double y_offset;
+
 	Vertex3D rotation;
 	Vertex3D focal_point;
 	std::vector<Vertex3D> space_vertex;
