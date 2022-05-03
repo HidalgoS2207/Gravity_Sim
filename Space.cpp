@@ -218,7 +218,7 @@ void Space::update_cube_vertex(int va, int vb, int vc, int idx)
 	cube[vb] = sf::Vector2f(focal_point.x + ((std::abs(space_vertex[idx].x / deep) * space_vertex[idx].x) * scale_factor), focal_point.z + ((std::abs(space_vertex[idx].z / deep) * space_vertex[idx].z) * scale_factor));
 	cube[vc] = sf::Vector2f(focal_point.x + ((std::abs(space_vertex[idx].x / deep) * space_vertex[idx].x) * scale_factor), focal_point.z + ((std::abs(space_vertex[idx].z / deep) * space_vertex[idx].z) * scale_factor));*/
 
-	double deep = std::abs(focal_point.y - space_vertex[idx].y) / focal_point.y;
+	double deep = std::abs(focal_point.y + space_vertex[idx].y) / focal_point.y;
 
 	cube[va] = sf::Vector2f(focal_point.x + ((std::abs(deep) * space_vertex[idx].x) * scale_factor), focal_point.z + ((std::abs(deep) * space_vertex[idx].z) * scale_factor));
 	cube[vb] = sf::Vector2f(focal_point.x + ((std::abs(deep) * space_vertex[idx].x) * scale_factor), focal_point.z + ((std::abs(deep) * space_vertex[idx].z) * scale_factor));

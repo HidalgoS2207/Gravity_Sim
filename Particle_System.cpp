@@ -194,7 +194,7 @@ void Particle_System::generate_random_particles(int num_particles)
 
 void Particle_System::update_projection(Particle* p)
 {
-	double deep = std::abs(focal_point.y - p->get_position().y) / focal_point.y;
+	double deep = std::abs(focal_point.y + p->get_position().y) / focal_point.y;
 
 	//cube[va] = sf::Vector2f(focal_point.x + ((std::abs(deep) * space_vertex[idx].x) * scale_factor), focal_point.z + ((std::abs(deep) * space_vertex[idx].z) * scale_factor));
 	//cube[vb] = sf::Vector2f(focal_point.x + ((std::abs(deep) * space_vertex[idx].x) * scale_factor), focal_point.z + ((std::abs(deep) * space_vertex[idx].z) * scale_factor));
