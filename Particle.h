@@ -28,6 +28,8 @@ private:
 	Vertex3D position;
 	Vertex3D force;
 
+	Vertex3D last_pos;
+
 	sf::Vertex v_rep;
 
 	int check_bounce(double pos,double limit);

@@ -10,6 +10,8 @@ Particle::Particle(double mass, double radius)
 	speed.reset();
 	force.reset();
 	position.reset();
+
+	last_pos.reset();
 }
 
 Particle::~Particle()
@@ -48,6 +50,10 @@ void Particle::update(double tic, double limit)
 
 	correct_pos(limit / 2.0);
 
+	last_pos.x = position.x;
+	last_pos.y = position.y;
+	last_pos.z = position.z;
+
 	position.x = position.x + (speed.x * tic);
 	position.y = position.y + (speed.y * tic);
 	position.z = position.z + (speed.z * tic);
@@ -68,6 +74,8 @@ void Particle::set_speed(double x, double y, double z)
 	speed.x = x;
 	speed.y = y;
 	speed.z = z;
+
+	update(0.01, std::numeric_limits<double>::max());
 }
 
 void Particle::set_position(double x, double y, double z, double vx, double vy)
