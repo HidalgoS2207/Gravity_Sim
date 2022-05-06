@@ -36,7 +36,7 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	p_spd.y = 0.0;
 	p_spd.z = 0.0;
 
-	particle_system.generate_random_particles(5);
+	particle_system.generate_random_particles_nd(40);
 	particle_system.generate_particle(100, 10,p_pos,p_spd );
 }
 

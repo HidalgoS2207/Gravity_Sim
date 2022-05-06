@@ -192,6 +192,37 @@ void Particle_System::generate_random_particles(int num_particles)
 	}
 }
 
+void Particle_System::generate_random_particles_nd(int num_particles)
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_real_distribution<> dis_x(((-1) * (space_size / 2)) * 0.85, ((1) * (space_size / 2)) * 0.85);
+	std::uniform_real_distribution<> dis_y(((-1) * (space_size / 2)) * 0.85, ((1) * (space_size / 2)) * 0.85);
+	std::normal_distribution<> dis_z(0, space_size*0.01);
+	std::uniform_real_distribution<> spd_dis(-5.0, 5.0);
+
+	for (int i = 0; i < num_particles; i++)
+	{
+		Particle* p = new Particle(1, 1);
+
+		double x_pos = dis_x(gen);
+		double y_pos = dis_y(gen);
+		double z_pos = dis_z(gen);
+
+		double vx_rep = (coor_center.first + (x_pos * scale_factor));
+		double vy_rep = (coor_center.second + (y_pos * scale_factor));
+
+		double x_spd = spd_dis(gen);
+		double y_spd = spd_dis(gen);
+		double z_spd = spd_dis(gen);
+
+		p->set_position(x_pos, y_pos, z_pos, vx_rep, vy_rep);
+		p->set_speed(x_spd, y_spd, z_spd);
+
+		particles.push_back(p);
+	}
+}
+
 void Particle_System::generate_particle(double mass, double radius, Vertex3D pos, Vertex3D speed)
 {
 	Particle* p = new Particle(mass, radius);
