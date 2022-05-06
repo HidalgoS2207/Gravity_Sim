@@ -36,6 +36,7 @@ public:
 	void camera_z_rotate(double z);
 
 	void generate_random_particles(int num_particles);
+	void generate_particle(double mass, double radius, Vertex3D pos, Vertex3D speed);
 private:
 	std::vector<Particle*> particles;
 

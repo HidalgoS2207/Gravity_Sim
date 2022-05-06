@@ -192,6 +192,18 @@ void Particle_System::generate_random_particles(int num_particles)
 	}
 }
 
+void Particle_System::generate_particle(double mass, double radius, Vertex3D pos, Vertex3D speed)
+{
+	Particle* p = new Particle(mass, radius);
+
+	p->set_speed(speed.x, speed.y, speed.z);
+	p->set_position(pos.x, pos.y, pos.z,0,0);
+
+	update_projection(p);
+
+	particles.push_back(p);
+}
+
 void Particle_System::update_projection(Particle* p)
 {
 	double deep = std::abs(focal_point.y + p->get_position().y) / focal_point.y;

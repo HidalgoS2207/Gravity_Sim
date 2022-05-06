@@ -50,9 +50,9 @@ void Particle::update(double tic, double limit)
 
 	correct_pos(limit / 2.0);
 
-	last_pos.x = position.x;
-	last_pos.y = position.y;
-	last_pos.z = position.z;
+	//last_pos.x = position.x;
+	//last_pos.y = position.y;
+	//last_pos.z = position.z;
 
 	position.x = position.x + (speed.x * tic);
 	position.y = position.y + (speed.y * tic);
