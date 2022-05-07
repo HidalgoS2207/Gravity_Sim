@@ -1,9 +1,10 @@
 #include "Particle.h"
 
-Particle::Particle(double mass, double radius)
+Particle::Particle(double mass, double radius,unsigned int ID)
 	:
 	mass(mass),
-	radius(radius)
+	radius(radius),
+	ID(ID)
 {
 	v_rep.color = sf::Color::Red;
 
@@ -42,6 +43,11 @@ sf::Vertex& Particle::get_proy_position()
 	return v_rep;
 }
 
+unsigned int Particle::get_id()
+{
+	return this->ID;
+}
+
 void Particle::update(double tic, double limit)
 {
 	speed.x = (speed.x + ((force.x / mass) * tic)) * (check_bounce(abs(position.x), limit / 2.0));
@@ -75,7 +81,7 @@ void Particle::set_speed(double x, double y, double z)
 	speed.y = y;
 	speed.z = z;
 
-	update(0.01, std::numeric_limits<double>::max());
+	//update(0.01, std::numeric_limits<double>::max());
 }
 
 void Particle::set_position(double x, double y, double z, double vx, double vy)
@@ -86,6 +92,13 @@ void Particle::set_position(double x, double y, double z, double vx, double vy)
 
 	v_rep.position.x = vx;
 	v_rep.position.y = vy;
+}
+
+void Particle::set_force(Vertex3D& force)
+{
+	this->force.x = force.x;
+	this->force.y = force.y;
+	this->force.z = force.z;
 }
 
 int Particle::check_bounce(double pos, double limit)

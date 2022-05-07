@@ -42,6 +42,7 @@ void Particle_System::update(double tic)
 	{
 		p->update(tic, space_size);
 
+		update_attraction_forces();
 		//p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
 		//p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
 		update_projection(p);
@@ -172,7 +173,9 @@ void Particle_System::generate_random_particles(int num_particles)
 
 	for (int i = 0; i < num_particles; i++)
 	{
-		Particle* p = new Particle(1, 1);
+		unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
+
+		Particle* p = new Particle(1, 1, id);
 
 		double x_pos = dis(gen);
 		double y_pos = dis(gen);
@@ -198,12 +201,14 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 	std::mt19937 gen(rd());
 	std::uniform_real_distribution<> dis_x(((-1) * (space_size / 2)) * 0.85, ((1) * (space_size / 2)) * 0.85);
 	std::uniform_real_distribution<> dis_y(((-1) * (space_size / 2)) * 0.85, ((1) * (space_size / 2)) * 0.85);
-	std::normal_distribution<> dis_z(0, space_size*0.01);
+	std::normal_distribution<> dis_z(0, space_size * 0.02);
 	std::uniform_real_distribution<> spd_dis(-5.0, 5.0);
 
 	for (int i = 0; i < num_particles; i++)
 	{
-		Particle* p = new Particle(1, 1);
+		unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
+
+		Particle* p = new Particle(10, 1, id);
 
 		double x_pos = dis_x(gen);
 		double y_pos = dis_y(gen);
@@ -225,14 +230,76 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 
 void Particle_System::generate_particle(double mass, double radius, Vertex3D pos, Vertex3D speed)
 {
-	Particle* p = new Particle(mass, radius);
+	unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
+
+	Particle* p = new Particle(mass, radius,id);
 
 	p->set_speed(speed.x, speed.y, speed.z);
-	p->set_position(pos.x, pos.y, pos.z,0,0);
+	p->set_position(pos.x, pos.y, pos.z, 0, 0);
 
 	update_projection(p);
 
 	particles.push_back(p);
+}
+
+void Particle_System::update_attraction_forces()
+{
+	double dx = 0.0;
+	double dy = 0.0;
+	double dz = 0.0;
+
+	double dt = 0.0;
+	double ft = 0.0;
+
+	double ca = 0.0;
+	double saz = 0.0;
+	double sa = 0.0;
+
+	Vertex3D f;
+
+	for (auto& p : particles)
+	{
+		for (auto& q : particles)
+		{
+			if (p->get_id() != q->get_id())
+			{
+				dx = (p->get_position().x - q->get_position().x);
+				dy = (p->get_position().y - q->get_position().y);
+				dz = (p->get_position().z - q->get_position().z);
+
+				dt = sqrt((dx * dx) + (dy * dy) + (dz * dz));
+
+				ca = dx / dt;
+				sa = dy / dt;
+				saz = dz / dt;
+
+				ft = (-1.0) * gravitational_constant * (p->get_mass() * q->get_mass()) / (dt * dt);
+
+				f.x = ca * ft;
+				f.y = sa * ft;
+				f.z = saz * ft;
+
+				//f.x = gravitational_constant * (p->get_mass() * q->get_mass()) / (dx * dx);
+				//f.y = gravitational_constant * (p->get_mass() * q->get_mass()) / (dy * dy);
+				//f.z = gravitational_constant * (p->get_mass() * q->get_mass()) / (dz * dz);
+
+				p->set_force(f);
+			}
+
+			dx = 0.0;
+			dy = 0.0;
+			dz = 0.0;
+
+			dt = 0.0;
+			ft = 0.0;
+
+			ca = 0.0;
+			saz = 0.0;
+			sa = 0.0;
+
+			f.reset();
+		}
+	}
 }
 
 void Particle_System::update_projection(Particle* p)
