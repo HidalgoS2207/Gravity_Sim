@@ -1,10 +1,11 @@
 #include "Particle.h"
 
-Particle::Particle(double mass, double radius,unsigned int ID)
+Particle::Particle(double mass, double radius,unsigned int ID,bool fixed)
 	:
 	mass(mass),
 	radius(radius),
-	ID(ID)
+	ID(ID),
+	fixed(fixed)
 {
 	v_rep.color = sf::Color::Red;
 
@@ -50,9 +51,9 @@ unsigned int Particle::get_id()
 
 void Particle::update(double tic, double limit)
 {
-	speed.x = (speed.x + ((force.x / mass) * tic)) * (check_bounce(abs(position.x), limit / 2.0));
-	speed.y = (speed.y + ((force.y / mass) * tic)) * (check_bounce(abs(position.y), limit / 2.0));
-	speed.z = (speed.z + ((force.z / mass) * tic)) * (check_bounce(abs(position.z), limit / 2.0));
+	speed.x = (speed.x + ((force.x / mass) * tic)) * (check_bounce(abs(position.x), limit / 2.0)) * int(!fixed);
+	speed.y = (speed.y + ((force.y / mass) * tic)) * (check_bounce(abs(position.y), limit / 2.0)) * int(!fixed);
+	speed.z = (speed.z + ((force.z / mass) * tic)) * (check_bounce(abs(position.z), limit / 2.0)) * int(!fixed);
 
 	correct_pos(limit / 2.0);
 

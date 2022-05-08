@@ -38,13 +38,12 @@ Particle_System::~Particle_System()
 
 void Particle_System::update(double tic)
 {
+	update_attraction_forces(particles.back());
+
 	for (auto& p : particles)
 	{
 		p->update(tic, space_size);
 
-		update_attraction_forces();
-		//p->get_proy_position().position.x = (coor_center.first + (p->get_position().x * scale_factor));
-		//p->get_proy_position().position.y = (coor_center.second + (p->get_position().z * scale_factor));
 		update_projection(p);
 	}
 }
@@ -175,7 +174,7 @@ void Particle_System::generate_random_particles(int num_particles)
 	{
 		unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
 
-		Particle* p = new Particle(1, 1, id);
+		Particle* p = new Particle(1, 1, id, 0);
 
 		double x_pos = dis(gen);
 		double y_pos = dis(gen);
@@ -208,7 +207,7 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 	{
 		unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
 
-		Particle* p = new Particle(10, 1, id);
+		Particle* p = new Particle(10, 1, id, 0);
 
 		double x_pos = dis_x(gen);
 		double y_pos = dis_y(gen);
@@ -228,11 +227,11 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 	}
 }
 
-void Particle_System::generate_particle(double mass, double radius, Vertex3D pos, Vertex3D speed)
+void Particle_System::generate_particle(double mass, double radius, Vertex3D pos, Vertex3D speed, bool fixed)
 {
 	unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
 
-	Particle* p = new Particle(mass, radius,id);
+	Particle* p = new Particle(mass, radius, id, fixed);
 
 	p->set_speed(speed.x, speed.y, speed.z);
 	p->set_position(pos.x, pos.y, pos.z, 0, 0);
@@ -242,7 +241,7 @@ void Particle_System::generate_particle(double mass, double radius, Vertex3D pos
 	particles.push_back(p);
 }
 
-void Particle_System::update_attraction_forces()
+void Particle_System::update_attraction_forces(Particle* q)
 {
 	double dx = 0.0;
 	double dy = 0.0;
@@ -259,46 +258,40 @@ void Particle_System::update_attraction_forces()
 
 	for (auto& p : particles)
 	{
-		for (auto& q : particles)
+		if (p->get_id() != q->get_id())
 		{
-			if (p->get_id() != q->get_id())
-			{
-				dx = (p->get_position().x - q->get_position().x);
-				dy = (p->get_position().y - q->get_position().y);
-				dz = (p->get_position().z - q->get_position().z);
+			dx = (p->get_position().x - q->get_position().x);
+			dy = (p->get_position().y - q->get_position().y);
+			dz = (p->get_position().z - q->get_position().z);
 
-				dt = sqrt((dx * dx) + (dy * dy) + (dz * dz));
+			dt = sqrt((dx * dx) + (dy * dy) + (dz * dz));
 
-				ca = dx / dt;
-				sa = dy / dt;
-				saz = dz / dt;
+			ca = dx / dt;
+			sa = dy / dt;
+			saz = dz / dt;
 
-				ft = (-1.0) * gravitational_constant * (p->get_mass() * q->get_mass()) / (dt * dt);
+			ft = (-1.0) * gravitational_constant * (p->get_mass() * q->get_mass()) / (dt * dt);
 
-				f.x = ca * ft;
-				f.y = sa * ft;
-				f.z = saz * ft;
+			f.x = ca * ft;
+			f.y = sa * ft;
+			f.z = saz * ft;
 
-				//f.x = gravitational_constant * (p->get_mass() * q->get_mass()) / (dx * dx);
-				//f.y = gravitational_constant * (p->get_mass() * q->get_mass()) / (dy * dy);
-				//f.z = gravitational_constant * (p->get_mass() * q->get_mass()) / (dz * dz);
-
-				p->set_force(f);
-			}
-
-			dx = 0.0;
-			dy = 0.0;
-			dz = 0.0;
-
-			dt = 0.0;
-			ft = 0.0;
-
-			ca = 0.0;
-			saz = 0.0;
-			sa = 0.0;
-
-			f.reset();
+			p->set_force(f);
 		}
+
+		dx = 0.0;
+		dy = 0.0;
+		dz = 0.0;
+
+		dt = 0.0;
+		ft = 0.0;
+
+		ca = 0.0;
+		saz = 0.0;
+		sa = 0.0;
+
+		f.reset();
+
 	}
 }
 

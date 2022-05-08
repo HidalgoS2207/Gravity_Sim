@@ -7,7 +7,7 @@
 class Particle
 {
 public:
-	Particle(double mass, double radius, unsigned int ID);
+	Particle(double mass, double radius, unsigned int ID,bool fixed);
 	~Particle();
 
 	double get_mass();
@@ -37,4 +37,6 @@ private:
 
 	int check_bounce(double pos, double limit);
 	void correct_pos(double limit);
+
+	bool fixed;
 };

@@ -6,7 +6,7 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	tic(0.01),
 	rot_stps(0.001),
 	gravitational_constant(6.67430 * (pow(10, -11))),
-	space({ rw.getSize().x,rw.getSize().y }, 200000),
+	space({ rw.getSize().x,rw.getSize().y }, 500),
 	particle_system(space.get_size(), space.get_scale_factor(),rw)
 {
 	std::cout << gravitational_constant << '\n';
@@ -28,26 +28,28 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	//------------------------------------------------------------------------------
 
 	Vertex3D p_pos;
-	p_pos.x = 0.0;
-	p_pos.y = 0.0;
-	p_pos.z = 0.0;
+	p_pos.x = 100.0;
+	p_pos.y = 100.0;
+	p_pos.z = 100.0;
 	Vertex3D p_spd;
 	p_spd.x = 0.0;
 	p_spd.y = 0.0;
 	p_spd.z = 0.0;
 
-	particle_system.generate_random_particles_nd(200);
-	particle_system.generate_particle(80000000, 10,p_pos,p_spd );
+	//particle_system.generate_particle(100, 10, p_pos, p_spd,false);
 
-	//p_pos.x = 100.0;
-	//p_pos.y = 100.0;
-	//p_pos.z = 100.0;
+	p_pos.x = 0.0;
+	p_pos.y = 0.0;
+	p_pos.z = 0.0;
 
-	//p_spd.x = 0.0;
-	//p_spd.y = 0.0;
-	//p_spd.z = 0.0;
+	p_spd.x = 0.0;
+	p_spd.y = 0.0;
+	p_spd.z = 0.0;
 
-	//particle_system.generate_particle(100, 10, p_pos, p_spd);
+	particle_system.generate_random_particles_nd(1000);
+	particle_system.generate_particle(999999999999, 10,p_pos,p_spd ,true);
+
+
 }
 
 Sim_Core::~Sim_Core()
