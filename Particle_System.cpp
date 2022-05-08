@@ -201,13 +201,13 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 	std::uniform_real_distribution<> dis_x(((-1) * (space_size / 2)) * 0.85, ((1) * (space_size / 2)) * 0.85);
 	std::uniform_real_distribution<> dis_y(((-1) * (space_size / 2)) * 0.85, ((1) * (space_size / 2)) * 0.85);
 	std::normal_distribution<> dis_z(0, space_size * 0.02);
-	std::uniform_real_distribution<> spd_dis(-5.0, 5.0);
+	std::uniform_real_distribution<> spd_dis(0.0, 10.0);
 
 	for (int i = 0; i < num_particles; i++)
 	{
 		unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
 
-		Particle* p = new Particle(10, 1, id, 0);
+		Particle* p = new Particle(10000, 1, id, 0);
 
 		double x_pos = dis_x(gen);
 		double y_pos = dis_y(gen);
@@ -215,6 +215,8 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 
 		double vx_rep = (coor_center.first + (x_pos * scale_factor));
 		double vy_rep = (coor_center.second + (y_pos * scale_factor));
+
+		double spd = spd_dis(gen);
 
 		double x_spd = spd_dis(gen);
 		double y_spd = spd_dis(gen);
@@ -256,6 +258,10 @@ void Particle_System::update_attraction_forces(Particle* q)
 
 	Vertex3D f;
 
+	int idx = 0.0;
+
+	set_to_destroy.clear();
+
 	for (auto& p : particles)
 	{
 		if (p->get_id() != q->get_id())
@@ -266,17 +272,26 @@ void Particle_System::update_attraction_forces(Particle* q)
 
 			dt = sqrt((dx * dx) + (dy * dy) + (dz * dz));
 
-			ca = dx / dt;
-			sa = dy / dt;
-			saz = dz / dt;
+			if (dt < p->get_radius() + q->get_radius())
+			{
+				q->set_mass(q->get_mass() + p->get_mass());
 
-			ft = (-1.0) * gravitational_constant * (p->get_mass() * q->get_mass()) / (dt * dt);
+				set_to_destroy.push_back(idx);
+			}
+			else
+			{
+				ca = dx / dt;
+				sa = dy / dt;
+				saz = dz / dt;
 
-			f.x = ca * ft;
-			f.y = sa * ft;
-			f.z = saz * ft;
+				ft = (-1.0) * gravitational_constant * (p->get_mass() * q->get_mass()) / (dt * dt);
 
-			p->set_force(f);
+				f.x = ca * ft;
+				f.y = sa * ft;
+				f.z = saz * ft;
+
+				p->set_force(f);
+			}
 		}
 
 		dx = 0.0;
@@ -292,6 +307,14 @@ void Particle_System::update_attraction_forces(Particle* q)
 
 		f.reset();
 
+		idx++;
+	}
+
+	for (int i = 0; i < set_to_destroy.size(); i++)
+	{
+		particles.erase(particles.begin() + set_to_destroy[i]);
+
+		particles.shrink_to_fit();
 	}
 }
 

@@ -51,6 +51,8 @@ private:
 	std::pair<double, double> screen_size;
 	std::pair<double, double> coor_center; //pxls
 
+	std::vector<int> set_to_destroy;
+
 	double space_size;
 	double scale_factor;
 
