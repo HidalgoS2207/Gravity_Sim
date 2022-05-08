@@ -206,14 +206,14 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 	std::uniform_real_distribution<> dis_x(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::uniform_real_distribution<> dis_y(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::normal_distribution<> dis_z(0, space_size * 0.02);
-	std::uniform_real_distribution<> spd_dis(0.0, 1000.0);
+	std::uniform_real_distribution<> spd_dis(0.0, 100000.0);
 	std::uniform_real_distribution<> spd_dis_z(-2.0, 2.0);
 
 	for (int i = 0; i < num_particles; i++)
 	{
 		unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
 
-		Particle* p = new Particle(1.0*pow(10,100), 1, id, 0);
+		Particle* p = new Particle(1.0*pow(10,1), 1, id, 0);
 
 		double x_pos = dis_x(gen);
 		//double y_pos = dis_y(gen);
