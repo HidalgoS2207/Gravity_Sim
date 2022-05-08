@@ -38,14 +38,17 @@ Particle_System::~Particle_System()
 
 void Particle_System::update(double tic)
 {
-	update_attraction_forces(particles.back());
-
 	for (auto& p : particles)
 	{
 		p->update(tic, space_size);
 
 		update_projection(p);
+
+		update_attraction_forces(particles.back(), p);
+		check_scapes(p);
 	}
+
+	clean_system();
 }
 
 void Particle_System::draw()
@@ -196,31 +199,46 @@ void Particle_System::generate_random_particles(int num_particles)
 
 void Particle_System::generate_random_particles_nd(int num_particles)
 {
+	double sdfcr = 0.45; //start_distance_from_center_ratio
+
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_real_distribution<> dis_x(((-1) * (space_size / 2)) * 0.85, ((1) * (space_size / 2)) * 0.85);
-	std::uniform_real_distribution<> dis_y(((-1) * (space_size / 2)) * 0.85, ((1) * (space_size / 2)) * 0.85);
+	std::uniform_real_distribution<> dis_x(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
+	std::uniform_real_distribution<> dis_y(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::normal_distribution<> dis_z(0, space_size * 0.02);
-	std::uniform_real_distribution<> spd_dis(0.0, 10.0);
+	std::uniform_real_distribution<> spd_dis(0.0, 1000.0);
+	std::uniform_real_distribution<> spd_dis_z(-2.0, 2.0);
 
 	for (int i = 0; i < num_particles; i++)
 	{
 		unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
 
-		Particle* p = new Particle(10000, 1, id, 0);
+		Particle* p = new Particle(1.0*pow(10,100), 1, id, 0);
 
 		double x_pos = dis_x(gen);
-		double y_pos = dis_y(gen);
-		double z_pos = dis_z(gen);
+		//double y_pos = dis_y(gen);
+		//double z_pos = dis_z(gen);
+		double z_pos = dis_y(gen);
+		double y_pos = dis_z(gen);
 
 		double vx_rep = (coor_center.first + (x_pos * scale_factor));
 		double vy_rep = (coor_center.second + (y_pos * scale_factor));
 
 		double spd = spd_dis(gen);
 
-		double x_spd = spd_dis(gen);
-		double y_spd = spd_dis(gen);
-		double z_spd = spd_dis(gen);
+		//double r = sqrt((x_pos * x_pos) + (y_pos * y_pos));
+		double r = sqrt((x_pos * x_pos) + (z_pos * z_pos));
+
+		double cs = x_pos / r;
+		/*double sn = y_pos / r;*/
+		double sn = z_pos / r;
+
+		double x_spd = spd * cs*(-1.0);
+		/*double y_spd = spd * sn;*/
+		double z_spd = spd * sn;
+
+		/*double z_spd = spd_dis_z(gen);*/
+		double y_spd = spd_dis_z(gen);
 
 		p->set_position(x_pos, y_pos, z_pos, vx_rep, vy_rep);
 		p->set_speed(x_spd, y_spd, z_spd);
@@ -243,7 +261,7 @@ void Particle_System::generate_particle(double mass, double radius, Vertex3D pos
 	particles.push_back(p);
 }
 
-void Particle_System::update_attraction_forces(Particle* q)
+void Particle_System::update_attraction_forces(Particle* q,Particle* p)
 {
 	double dx = 0.0;
 	double dy = 0.0;
@@ -258,64 +276,64 @@ void Particle_System::update_attraction_forces(Particle* q)
 
 	Vertex3D f;
 
-	int idx = 0.0;
-
-	set_to_destroy.clear();
-
-	for (auto& p : particles)
+	if (p->get_id() != q->get_id())
 	{
-		if (p->get_id() != q->get_id())
+		dx = (p->get_position().x - q->get_position().x);
+		dy = (p->get_position().y - q->get_position().y);
+		dz = (p->get_position().z - q->get_position().z);
+
+		dt = sqrt((dx * dx) + (dy * dy) + (dz * dz));
+
+		if (dt < p->get_radius() + q->get_radius())
 		{
-			dx = (p->get_position().x - q->get_position().x);
-			dy = (p->get_position().y - q->get_position().y);
-			dz = (p->get_position().z - q->get_position().z);
-
-			dt = sqrt((dx * dx) + (dy * dy) + (dz * dz));
-
-			if (dt < p->get_radius() + q->get_radius())
-			{
-				q->set_mass(q->get_mass() + p->get_mass());
-
-				set_to_destroy.push_back(idx);
-			}
-			else
-			{
-				ca = dx / dt;
-				sa = dy / dt;
-				saz = dz / dt;
-
-				ft = (-1.0) * gravitational_constant * (p->get_mass() * q->get_mass()) / (dt * dt);
-
-				f.x = ca * ft;
-				f.y = sa * ft;
-				f.z = saz * ft;
-
-				p->set_force(f);
-			}
+			p->toggle_state();
 		}
+		else
+		{
+			ca = dx / dt;
+			sa = dy / dt;
+			saz = dz / dt;
 
-		dx = 0.0;
-		dy = 0.0;
-		dz = 0.0;
+			ft = (-1.0) * gravitational_constant * (p->get_mass() * q->get_mass()) / (dt * dt);
 
-		dt = 0.0;
-		ft = 0.0;
+			f.x = ca * ft;
+			f.y = sa * ft;
+			f.z = saz * ft;
 
-		ca = 0.0;
-		saz = 0.0;
-		sa = 0.0;
-
-		f.reset();
-
-		idx++;
+			p->set_force(f);
+		}
 	}
+}
 
-	for (int i = 0; i < set_to_destroy.size(); i++)
+void Particle_System::check_scapes(Particle * p)
+{
+	if (sqrt((p->get_position().x * p->get_position().x) + (p->get_position().y * p->get_position().y) + p->get_position().z * p->get_position().z) >= (space_size / 2.0))
 	{
-		particles.erase(particles.begin() + set_to_destroy[i]);
-
-		particles.shrink_to_fit();
+		p->toggle_state();
 	}
+}
+
+void Particle_System::clean_system()
+{
+	int idx = 0;
+
+	while (idx < particles.size())
+	{
+		idx = 0;
+
+		for (int i = 0; i < particles.size(); i++)
+		{
+			if (!particles[i]->get_state())
+			{
+				particles.erase(particles.begin() + i);
+
+				break;
+			}
+
+			idx++;
+		}
+	}
+
 }
 
 void Particle_System::update_projection(Particle* p)

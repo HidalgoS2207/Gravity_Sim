@@ -1,11 +1,12 @@
 #include "Particle.h"
 
-Particle::Particle(double mass, double radius,unsigned int ID,bool fixed)
+Particle::Particle(double mass, double radius, unsigned int ID, bool fixed)
 	:
 	mass(mass),
 	radius(radius),
 	ID(ID),
-	fixed(fixed)
+	fixed(fixed),
+	state(true)
 {
 	v_rep.color = sf::Color::Red;
 
@@ -49,13 +50,22 @@ unsigned int Particle::get_id()
 	return this->ID;
 }
 
+bool Particle::get_state()
+{
+	return state;
+}
+
 void Particle::update(double tic, double limit)
 {
-	speed.x = (speed.x + ((force.x / mass) * tic)) * (check_bounce(abs(position.x), limit / 2.0)) * int(!fixed);
-	speed.y = (speed.y + ((force.y / mass) * tic)) * (check_bounce(abs(position.y), limit / 2.0)) * int(!fixed);
-	speed.z = (speed.z + ((force.z / mass) * tic)) * (check_bounce(abs(position.z), limit / 2.0)) * int(!fixed);
+	//speed.x = (speed.x + ((force.x / mass) * tic)) * (check_bounce(abs(position.x), limit / 2.0)) * int(!fixed);
+	//speed.y = (speed.y + ((force.y / mass) * tic)) * (check_bounce(abs(position.y), limit / 2.0)) * int(!fixed);
+	//speed.z = (speed.z + ((force.z / mass) * tic)) * (check_bounce(abs(position.z), limit / 2.0)) * int(!fixed);
 
-	correct_pos(limit / 2.0);
+	speed.x = (speed.x + ((force.x / mass) * tic)) * int(!fixed);
+	speed.y = (speed.y + ((force.y / mass) * tic)) * int(!fixed);
+	speed.z = (speed.z + ((force.z / mass) * tic)) * int(!fixed);
+
+	//correct_pos(limit / 2.0);
 
 	//last_pos.x = position.x;
 	//last_pos.y = position.y;
@@ -100,6 +110,11 @@ void Particle::set_force(Vertex3D& force)
 	this->force.x = force.x;
 	this->force.y = force.y;
 	this->force.z = force.z;
+}
+
+void Particle::toggle_state()
+{
+	state = !state;
 }
 
 int Particle::check_bounce(double pos, double limit)

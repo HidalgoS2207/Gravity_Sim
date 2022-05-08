@@ -16,6 +16,7 @@ public:
 	Vertex3D& get_position();
 	sf::Vertex& get_proy_position();
 	unsigned int get_id();
+	bool get_state();
 	void update(double tic, double limit);
 
 	void set_mass(double m);
@@ -23,6 +24,8 @@ public:
 	void set_speed(double x, double y, double z);
 	void set_position(double x, double y, double z, double vx, double vy);
 	void set_force(Vertex3D& force);
+
+	void toggle_state();
 private:
 	double mass;
 	double radius;
@@ -30,6 +33,8 @@ private:
 	Vertex3D speed;
 	Vertex3D position;
 	Vertex3D force;
+
+	bool state;
 
 	Vertex3D last_pos;
 

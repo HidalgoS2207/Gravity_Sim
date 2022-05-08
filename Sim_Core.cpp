@@ -3,10 +3,10 @@
 Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	:
 	rw(rw),
-	tic(0.01),
-	rot_stps(0.001),
+	tic(0.1),
+	rot_stps(0.1),
 	gravitational_constant(6.67430 * (pow(10, -11))),
-	space({ rw.getSize().x,rw.getSize().y }, 50000),
+	space({ rw.getSize().x,rw.getSize().y }, 1000000),
 	particle_system(space.get_size(), space.get_scale_factor(),rw)
 {
 	std::cout << gravitational_constant << '\n';
@@ -46,8 +46,8 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	p_spd.y = 0.0;
 	p_spd.z = 0.0;
 
-	particle_system.generate_random_particles_nd(100);
-	particle_system.generate_particle(5.97*pow(10,16), 640, p_pos, p_spd, true);
+	particle_system.generate_random_particles_nd(20000);
+	particle_system.generate_particle(5.97*pow(10,21), 640, p_pos, p_spd, true);
 
 
 }
@@ -70,7 +70,7 @@ void Sim_Core::draw()
 	}
 
 	particle_system.draw();
-	space.draw(rw);
+	//space.draw(rw);
 }
 
 void Sim_Core::set_sign(sf::Font& font, sf::Text& to, std::string text, int size, int x_pos, int y_pos)
