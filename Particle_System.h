@@ -43,6 +43,8 @@ private:
 	void check_scapes(Particle * p);
 	void clean_system();
 
+	const double PI;
+
 	std::vector<Particle*> particles;
 
 	Vertex3D focal_point;

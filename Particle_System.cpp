@@ -8,7 +8,8 @@ Particle_System::Particle_System(double space_size, double scale_factor, sf::Ren
 	rx(RotMatrix::RotAxis::rx),
 	ry(RotMatrix::RotAxis::ry),
 	rz(RotMatrix::RotAxis::rz),
-	gravitational_constant(6.67430 * (pow(10, -11)))
+	gravitational_constant(6.67430 * (pow(10, -11))),
+	PI(3.141592653)
 {
 	screen_size.first = rw.getSize().x;
 	screen_size.second = rw.getSize().y;
@@ -206,14 +207,14 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 	std::uniform_real_distribution<> dis_x(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::uniform_real_distribution<> dis_y(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::normal_distribution<> dis_z(0, space_size * 0.02);
-	std::uniform_real_distribution<> spd_dis(0.0, 100000.0);
+	std::uniform_real_distribution<> spd_dis(10000, 100000.0);
 	std::uniform_real_distribution<> spd_dis_z(-2.0, 2.0);
 
 	for (int i = 0; i < num_particles; i++)
 	{
 		unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
 
-		Particle* p = new Particle(1.0*pow(10,1), 1, id, 0);
+		Particle* p = new Particle(1.0*pow(10,4), 1, id, 0);
 
 		double x_pos = dis_x(gen);
 		//double y_pos = dis_y(gen);
@@ -229,11 +230,11 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 		//double r = sqrt((x_pos * x_pos) + (y_pos * y_pos));
 		double r = sqrt((x_pos * x_pos) + (z_pos * z_pos));
 
-		double cs = x_pos / r;
+		double cs = cos(acos(x_pos / r)+(PI/2.0));
 		/*double sn = y_pos / r;*/
-		double sn = z_pos / r;
+		double sn = sin(asin(z_pos / r)+(PI/2.0));
 
-		double x_spd = spd * cs*(-1.0);
+		double x_spd = spd * cs;
 		/*double y_spd = spd * sn;*/
 		double z_spd = spd * sn;
 
