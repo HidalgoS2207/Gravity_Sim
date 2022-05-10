@@ -234,9 +234,9 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 		/*double sn = y_pos / r;*/
 		double sn = sin(asin(z_pos / r)+(PI/2.0));
 
-		double x_spd = spd * cs;
+		double x_spd = spd * sn;
 		/*double y_spd = spd * sn;*/
-		double z_spd = spd * sn;
+		double z_spd = spd * cs;
 
 		/*double z_spd = spd_dis_z(gen);*/
 		double y_spd = spd_dis_z(gen);
