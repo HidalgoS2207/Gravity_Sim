@@ -233,7 +233,7 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 		double x_spd = spd * cs;
 		double z_spd = spd * sn;
 
-		switch (check_quadrant(x_pos, r))
+		switch (check_quadrant(x_pos,z_pos, r))
 		{
 		case 0:
 			if (x_spd > 0.0)
@@ -241,7 +241,7 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 				x_spd *= (-1.0);
 			}
 
-			if (z_spd > 0.0)
+			if (z_spd < 0.0)
 			{
 				z_spd *= (-1.0);
 			}
@@ -252,7 +252,7 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 				x_spd *= (-1.0);
 			}
 
-			if (z_spd < 0.0)
+			if (z_spd > 0.0)
 			{
 				z_spd *= (-1.0);
 			}
@@ -263,7 +263,7 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 				x_spd *= (-1.0);
 			}
 
-			if (z_spd < 0.0)
+			if (z_spd > 0.0)
 			{
 				z_spd *= (-1.0);
 			}
@@ -274,7 +274,7 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 				x_spd *= (-1.0);
 			}
 
-			if (z_spd > 0.0)
+			if (z_spd < 0.0)
 			{
 				z_spd *= (-1.0);
 			}
@@ -382,25 +382,31 @@ void Particle_System::clean_system()
 
 }
 
-int Particle_System::check_quadrant(double c1, double h)
+int Particle_System::check_quadrant(double x,double y, double h)
 {
-	double ang = acos(c1 / h);
+	double ang = acos(x / h);
 
 	if (ang >= 0.0 && ang < PI / 2.0)
 	{
-		return 0;
+		if (y < 0.0)
+		{
+			return 3;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 	else if (ang >= PI / 2.0 && ang < PI)
 	{
-		return 1;
-	}
-	else if (ang >= PI && ang < ((2 * PI) / 3))
-	{
-		return 2;
-	}
-	else
-	{
-		return 3;
+		if (y < 0.0)
+		{
+			return 2;
+		}
+		else
+		{
+			return 1;
+		}
 	}
 
 	return -1;

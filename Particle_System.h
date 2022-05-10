@@ -43,7 +43,7 @@ private:
 	void update_attraction_forces(Particle* q,Particle * p);
 	void check_scapes(Particle * p);
 	void clean_system();
-	int check_quadrant(double c1,double h);
+	int check_quadrant(double x,double y,double h);
 
 	const double PI;
 
