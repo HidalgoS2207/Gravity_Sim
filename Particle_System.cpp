@@ -207,18 +207,16 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 	std::uniform_real_distribution<> dis_x(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::uniform_real_distribution<> dis_y(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::normal_distribution<> dis_z(0, space_size * 0.02);
-	std::uniform_real_distribution<> spd_dis(10000, 100000.0);
-	std::uniform_real_distribution<> spd_dis_z(-2.0, 2.0);
+	std::uniform_real_distribution<> spd_dis(2000.0, 10000.0);
+	std::uniform_real_distribution<> spd_dis_z(-100.0, 100.0);
 
 	for (int i = 0; i < num_particles; i++)
 	{
 		unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
 
-		Particle* p = new Particle(1.0*pow(10,4), 1, id, 0);
+		Particle* p = new Particle(1.0 * pow(10, 5), 1, id, 0);
 
 		double x_pos = dis_x(gen);
-		//double y_pos = dis_y(gen);
-		//double z_pos = dis_z(gen);
 		double z_pos = dis_y(gen);
 		double y_pos = dis_z(gen);
 
@@ -227,18 +225,65 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 
 		double spd = spd_dis(gen);
 
-		//double r = sqrt((x_pos * x_pos) + (y_pos * y_pos));
 		double r = sqrt((x_pos * x_pos) + (z_pos * z_pos));
 
-		double cs = cos(acos(x_pos / r)+(PI/2.0));
-		/*double sn = y_pos / r;*/
-		double sn = sin(asin(z_pos / r)+(PI/2.0));
+		double cs = cos(acos(x_pos / r) + (PI / 2.0));
+		double sn = sin(asin(z_pos / r) + (PI / 2.0));
 
-		double x_spd = spd * sn;
-		/*double y_spd = spd * sn;*/
-		double z_spd = spd * cs;
+		double x_spd = spd * cs;
+		double z_spd = spd * sn;
 
-		/*double z_spd = spd_dis_z(gen);*/
+		switch (check_quadrant(x_pos, r))
+		{
+		case 0:
+			if (x_spd > 0.0)
+			{
+				x_spd *= (-1.0);
+			}
+
+			if (z_spd > 0.0)
+			{
+				z_spd *= (-1.0);
+			}
+			break;
+		case 1:
+			if (x_spd > 0.0)
+			{
+				x_spd *= (-1.0);
+			}
+
+			if (z_spd < 0.0)
+			{
+				z_spd *= (-1.0);
+			}
+			break;
+		case 2:
+			if (x_spd < 0.0)
+			{
+				x_spd *= (-1.0);
+			}
+
+			if (z_spd < 0.0)
+			{
+				z_spd *= (-1.0);
+			}
+			break;
+		case 3:
+			if (x_spd < 0.0)
+			{
+				x_spd *= (-1.0);
+			}
+
+			if (z_spd > 0.0)
+			{
+				z_spd *= (-1.0);
+			}
+			break;
+		default:
+			std::cout << "failed to check quadrant\n\n";
+			break;
+		}
+
 		double y_spd = spd_dis_z(gen);
 
 		p->set_position(x_pos, y_pos, z_pos, vx_rep, vy_rep);
@@ -262,7 +307,7 @@ void Particle_System::generate_particle(double mass, double radius, Vertex3D pos
 	particles.push_back(p);
 }
 
-void Particle_System::update_attraction_forces(Particle* q,Particle* p)
+void Particle_System::update_attraction_forces(Particle* q, Particle* p)
 {
 	double dx = 0.0;
 	double dy = 0.0;
@@ -306,7 +351,7 @@ void Particle_System::update_attraction_forces(Particle* q,Particle* p)
 	}
 }
 
-void Particle_System::check_scapes(Particle * p)
+void Particle_System::check_scapes(Particle* p)
 {
 	if (sqrt((p->get_position().x * p->get_position().x) + (p->get_position().y * p->get_position().y) + p->get_position().z * p->get_position().z) >= (space_size / 2.0))
 	{
@@ -335,6 +380,30 @@ void Particle_System::clean_system()
 		}
 	}
 
+}
+
+int Particle_System::check_quadrant(double c1, double h)
+{
+	double ang = acos(c1 / h);
+
+	if (ang >= 0.0 && ang < PI / 2.0)
+	{
+		return 0;
+	}
+	else if (ang >= PI / 2.0 && ang < PI)
+	{
+		return 1;
+	}
+	else if (ang >= PI && ang < ((2 * PI) / 3))
+	{
+		return 2;
+	}
+	else
+	{
+		return 3;
+	}
+
+	return -1;
 }
 
 void Particle_System::update_projection(Particle* p)

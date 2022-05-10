@@ -9,6 +9,7 @@
 
 #include <random>
 #include <math.h>
+#include <iostream>
 
 class Particle_System
 {
@@ -42,6 +43,7 @@ private:
 	void update_attraction_forces(Particle* q,Particle * p);
 	void check_scapes(Particle * p);
 	void clean_system();
+	int check_quadrant(double c1,double h);
 
 	const double PI;
 
