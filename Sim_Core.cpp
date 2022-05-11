@@ -3,8 +3,8 @@
 Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	:
 	rw(rw),
-	tic(0.01),
-	rot_stps(0.01),
+	tic(0.5),
+	rot_stps(0.1),
 	gravitational_constant(6.67430 * (pow(10, -11))),
 	space({ rw.getSize().x,rw.getSize().y }, 1.0*pow(10,8)),
 	particle_system(space.get_size(), space.get_scale_factor(),rw)
@@ -46,10 +46,18 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	p_spd.y = 0.0;
 	p_spd.z = 0.0;
 
-	particle_system.generate_random_particles_nd(6000);
+	particle_system.generate_random_particles_nd(20000);
 	particle_system.generate_particle(5.97*pow(10,24), 3*pow(10,6), p_pos, p_spd, true);
 
+	p_pos.x = 0.0;
+	p_pos.y = 30 * pow(10, 6);
+	p_pos.z = 0.0;
 
+	p_spd.x = 0.0;
+	p_spd.y = 0.0;
+	p_spd.z = -100.0;
+
+	particle_system.generate_particle(5.97 * pow(10, 24), 3 * pow(10, 6), p_pos, p_spd, false);
 }
 
 Sim_Core::~Sim_Core()

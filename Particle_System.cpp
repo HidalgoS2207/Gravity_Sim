@@ -45,6 +45,7 @@ void Particle_System::update(double tic)
 
 		update_projection(p);
 
+		update_attraction_forces(particles[particles.size()-2], p);
 		update_attraction_forces(particles.back(), p);
 		check_scapes(p);
 	}
@@ -207,7 +208,7 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 	std::uniform_real_distribution<> dis_x(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::uniform_real_distribution<> dis_y(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::normal_distribution<> dis_z(0, space_size * 0.02);
-	std::uniform_real_distribution<> spd_dis(2000.0, 10000.0);
+	std::uniform_real_distribution<> spd_dis(10.0, 20.0);
 	std::uniform_real_distribution<> spd_dis_z(-100.0, 100.0);
 
 	for (int i = 0; i < num_particles; i++)
