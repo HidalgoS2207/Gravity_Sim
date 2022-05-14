@@ -39,6 +39,8 @@ public:
 	void generate_random_particles(int num_particles);
 	void generate_random_particles_nd(int num_particles);
 	void generate_particle(double mass, double radius, Vertex3D pos, Vertex3D speed,bool fixed);
+
+	Vertex3D& get_rotation();
 private:
 	void update_attraction_forces(Particle* q,Particle * p);
 	void check_scapes(Particle * p);

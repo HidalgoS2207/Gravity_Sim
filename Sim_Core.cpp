@@ -25,6 +25,9 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	signs.emplace_back();
 	set_sign(font1, signs[2], "0.0", 15, rw.getSize().x - 100, rw.getSize().y - 20);
 
+	signs.emplace_back();
+	set_sign(font1, signs[3], "0.0", 15, rw.getSize().x - 200,  20);
+
 	//------------------------------------------------------------------------------
 
 	Vertex3D p_pos;
@@ -46,18 +49,9 @@ Sim_Core::Sim_Core(sf::RenderWindow& rw)
 	p_spd.y = 0.0;
 	p_spd.z = 0.0;
 
-	particle_system.generate_random_particles_nd(20000);
-	particle_system.generate_particle(5.97*pow(10,24), 3*pow(10,6), p_pos, p_spd, true);
+	particle_system.generate_random_particles_nd(15000);
 
-	p_pos.x = 0.0;
-	p_pos.y = 30 * pow(10, 6);
-	p_pos.z = 0.0;
-
-	p_spd.x = 0.0;
-	p_spd.y = 0.0;
-	p_spd.z = -100.0;
-
-	particle_system.generate_particle(5.97 * pow(10, 24), 3 * pow(10, 6), p_pos, p_spd, false);
+	particle_system.generate_particle(5.97 * pow(10, 24), 3 * pow(10, 6), p_pos, p_spd, true);
 }
 
 Sim_Core::~Sim_Core()
@@ -68,6 +62,8 @@ void Sim_Core::update()
 	kbd_input();
 	//space.update();
 	particle_system.update(tic);
+
+	signs[3].setString("Particles Count: " + std::to_string(particle_system.get_num_particles()));
 }
 
 void Sim_Core::draw()
@@ -93,25 +89,49 @@ void Sim_Core::kbd_input()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 	{
-		//space.z_rotate(rot_stps);
-		particle_system.z_rotate(rot_stps);
-		particle_system.camera_x_rotate(rot_stps);
-		signs[2].setString(std::to_string(space.get_rotation_z()));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))
+		{
+			particle_system.z_rotate(rot_stps*(-1.0));
+			particle_system.camera_x_rotate(rot_stps * (-1.0));
+			signs[2].setString(std::to_string(particle_system.get_rotation().z));
+		}
+		else
+		{
+			particle_system.z_rotate(rot_stps);
+			particle_system.camera_x_rotate(rot_stps);
+			signs[2].setString(std::to_string(particle_system.get_rotation().z));
+		}
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
 	{
-		//space.y_rotate(rot_stps);
-		particle_system.y_rotate(rot_stps);
-		particle_system.camera_y_rotate(rot_stps);
-		signs[1].setString(std::to_string(space.get_rotation_y()));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))
+		{
+			particle_system.y_rotate(rot_stps*(-1.0));
+			particle_system.camera_y_rotate(rot_stps*(-1.0));
+			signs[1].setString(std::to_string(particle_system.get_rotation().y));
+		}
+		else
+		{
+			particle_system.y_rotate(rot_stps);
+			particle_system.camera_y_rotate(rot_stps);
+			signs[1].setString(std::to_string(particle_system.get_rotation().y));
+		}
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
 	{
-		//space.x_rotate(rot_stps);
-		particle_system.x_rotate(rot_stps);
-		particle_system.camera_z_rotate(rot_stps);
-		signs[0].setString(std::to_string(space.get_rotation_x()));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))
+		{
+			particle_system.x_rotate(rot_stps*(-1.0));
+			particle_system.camera_z_rotate(rot_stps*(-1.0));
+			signs[0].setString(std::to_string(particle_system.get_rotation().x));
+		}
+		else
+		{
+			particle_system.x_rotate(rot_stps);
+			particle_system.camera_z_rotate(rot_stps);
+			signs[0].setString(std::to_string(particle_system.get_rotation().x));
+		}
 	}
 }

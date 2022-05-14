@@ -45,8 +45,7 @@ void Particle_System::update(double tic)
 
 		update_projection(p);
 
-		update_attraction_forces(particles[particles.size()-2], p);
-		update_attraction_forces(particles.back(), p);
+		update_attraction_forces(particles[particles.size() - 1], p);
 		check_scapes(p);
 	}
 
@@ -208,14 +207,14 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 	std::uniform_real_distribution<> dis_x(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::uniform_real_distribution<> dis_y(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::normal_distribution<> dis_z(0, space_size * 0.02);
-	std::uniform_real_distribution<> spd_dis(10.0, 20.0);
+	std::uniform_real_distribution<> spd_dis(500.0, 3500.0);
 	std::uniform_real_distribution<> spd_dis_z(-100.0, 100.0);
 
 	for (int i = 0; i < num_particles; i++)
 	{
 		unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
 
-		Particle* p = new Particle(1.0 * pow(10, 5), 1, id, 0);
+		Particle* p = new Particle(1.0 * pow(10, 8), 1, id, 0);
 
 		double x_pos = dis_x(gen);
 		double z_pos = dis_y(gen);
@@ -234,7 +233,7 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 		double x_spd = spd * cs;
 		double z_spd = spd * sn;
 
-		switch (check_quadrant(x_pos,z_pos, r))
+		switch (check_quadrant(x_pos, z_pos, r))
 		{
 		case 0:
 			if (x_spd > 0.0)
@@ -306,6 +305,11 @@ void Particle_System::generate_particle(double mass, double radius, Vertex3D pos
 	update_projection(p);
 
 	particles.push_back(p);
+}
+
+Vertex3D& Particle_System::get_rotation()
+{
+	return rotation;
 }
 
 void Particle_System::update_attraction_forces(Particle* q, Particle* p)
@@ -383,7 +387,7 @@ void Particle_System::clean_system()
 
 }
 
-int Particle_System::check_quadrant(double x,double y, double h)
+int Particle_System::check_quadrant(double x, double y, double h)
 {
 	double ang = acos(x / h);
 
