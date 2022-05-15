@@ -45,7 +45,13 @@ void Particle_System::update(double tic)
 
 		update_projection(p);
 
-		update_attraction_forces(particles[particles.size() - 1], p);
+		p->reset_force();
+		for (auto& q : particles)
+		{
+			update_attraction_forces(q, p);
+		}
+
+		//update_attraction_forces(particles[particles.size() - 1], p);
 		check_scapes(p);
 	}
 
@@ -214,7 +220,7 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 	{
 		unsigned int id = particles.size() == 0 ? 0 : particles.back()->get_id() + 1;
 
-		Particle* p = new Particle(1.0 * pow(10, 8), 1, id, 0);
+		Particle* p = new Particle(1.0 * pow(10, 11), 1.0 * pow(10, 4), id, 0);
 
 		double x_pos = dis_x(gen);
 		double z_pos = dis_y(gen);
@@ -327,6 +333,10 @@ void Particle_System::update_attraction_forces(Particle* q, Particle* p)
 
 	Vertex3D f;
 
+	f.x = p->get_force().x;
+	f.y = p->get_force().y;
+	f.z = p->get_force().z;
+
 	if (p->get_id() != q->get_id())
 	{
 		dx = (p->get_position().x - q->get_position().x);
@@ -337,7 +347,15 @@ void Particle_System::update_attraction_forces(Particle* q, Particle* p)
 
 		if (dt < p->get_radius() + q->get_radius())
 		{
-			p->toggle_state();
+			if (!p->get_fixed_condition())
+			{
+				p->toggle_state();
+
+				if (!q->get_fixed_condition())
+				{
+					q->set_mass(q->get_mass() + p->get_mass());
+				}
+			}
 		}
 		else
 		{
@@ -347,9 +365,9 @@ void Particle_System::update_attraction_forces(Particle* q, Particle* p)
 
 			ft = (-1.0) * gravitational_constant * (p->get_mass() * q->get_mass()) / (dt * dt);
 
-			f.x = ca * ft;
-			f.y = sa * ft;
-			f.z = saz * ft;
+			f.x += ca * ft;
+			f.y += sa * ft;
+			f.z += saz * ft;
 
 			p->set_force(f);
 		}

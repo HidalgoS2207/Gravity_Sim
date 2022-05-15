@@ -55,6 +55,16 @@ bool Particle::get_state()
 	return state;
 }
 
+bool Particle::get_fixed_condition()
+{
+	return fixed;
+}
+
+Vertex3D Particle::get_force()
+{
+	return force;
+}
+
 void Particle::update(double tic, double limit)
 {
 	//speed.x = (speed.x + ((force.x / mass) * tic)) * (check_bounce(abs(position.x), limit / 2.0)) * int(!fixed);
@@ -110,6 +120,11 @@ void Particle::set_force(Vertex3D& force)
 	this->force.x = force.x;
 	this->force.y = force.y;
 	this->force.z = force.z;
+}
+
+void Particle::reset_force()
+{
+	force.reset();
 }
 
 void Particle::toggle_state()
