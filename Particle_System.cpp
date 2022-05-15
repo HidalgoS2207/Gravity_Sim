@@ -213,7 +213,7 @@ void Particle_System::generate_random_particles_nd(int num_particles)
 	std::uniform_real_distribution<> dis_x(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::uniform_real_distribution<> dis_y(((-1) * (space_size / 2)) * sdfcr, ((1) * (space_size / 2)) * sdfcr);
 	std::normal_distribution<> dis_z(0, space_size * 0.02);
-	std::uniform_real_distribution<> spd_dis(500.0, 3500.0);
+	std::uniform_real_distribution<> spd_dis(2000.0, 6000.0);
 	std::uniform_real_distribution<> spd_dis_z(-100.0, 100.0);
 
 	for (int i = 0; i < num_particles; i++)
@@ -337,7 +337,7 @@ void Particle_System::update_attraction_forces(Particle* q, Particle* p)
 	f.y = p->get_force().y;
 	f.z = p->get_force().z;
 
-	if (p->get_id() != q->get_id())
+	if ((p->get_id() != q->get_id()) && q->get_state())
 	{
 		dx = (p->get_position().x - q->get_position().x);
 		dy = (p->get_position().y - q->get_position().y);
